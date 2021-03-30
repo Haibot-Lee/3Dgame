@@ -35,7 +35,7 @@
 
         controls = new THREE.TrackballControls(camera);
 
-        var pointLight = new THREE.PointLight(0xffffff,2);
+        var pointLight = new THREE.PointLight(0xFFFFFF,2);
 
         // set its position
         pointLight.position.x = 0;
@@ -58,7 +58,7 @@
             map: texturesun,
         });
         var sun = new THREE.Mesh(geometry, material);
-        scene.add(sun);
+        //scene.add(sun);
 
         //earth
         var geometry = new THREE.SphereGeometry(50, 32, 32);
@@ -66,7 +66,7 @@
             map: texture
         });
         var earth = new THREE.Mesh(geometry, material);
-        scene.add(earth);
+        //scene.add(earth);
         earth.position.x = 200;
 
         //moon
@@ -75,12 +75,12 @@
             map: texturemoon
         });
         var moon = new THREE.Mesh(geometry, material);
-        scene.add(moon);
+        //scene.add(moon);
         moon.position.x = 300;
 
         // box
-        var geometry = new THREE.BoxGeometry( 50, 50, 50 );
-        var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+        var geometry = new THREE.BoxGeometry(500, 500, 500);
+        var material = new THREE.MeshBasicMaterial( {color: 0x39C5BB} );
         var cube = new THREE.Mesh( geometry, material );
         scene.add(cube);
         var pointLightBox = new THREE.PointLight(0xffffff,2);
@@ -89,12 +89,13 @@
         pointLightBox.position.x = 50;
         pointLightBox.position.y = 50;
         pointLightBox.position.z = 50;
+        scene.add(pointLightBox);
 
         var pivot = new THREE.Group();
         pivot.add(earth);
         pivot.add(moon);
 
-        scene.add(pivot);
+        //scene.add(pivot);
         pivot.position.x = 250;
 
         moon.position.x = 100;
@@ -103,7 +104,7 @@
         var pivot2 = new THREE.Group();
         pivot2.add(pivot);
         pivot2.add(sun);
-        scene.add(pivot2);
+        //scene.add(pivot2);
         pivot2.position.x = 0;
 
         camera.position.z = 300;
