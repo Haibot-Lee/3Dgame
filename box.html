@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Box</title>
+    <title>Simple Solar System</title>
     <style>
         html,
         body {
@@ -21,76 +21,102 @@
         // JavaScript will go here.
 
         var scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xffffff);
+        scene.background = new THREE.Color(0x000000);
 
-
-        var aspect = window.innerWidth / window.innerHeight; // aspect ratio
+        var aspect = window.innerWidth / window.innerHeight;
         var width = window.innerWidth;
         var height = window.innerHeight;
 
-
-        // OrthographicCamera(left, right, top, bottom, near, far)
         var camera = new THREE.OrthographicCamera(width / - 2, width / 2, height / 2, height / - 2, 1, 1000);
 
         var renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-
         controls = new THREE.TrackballControls(camera);
 
+        var pointLight = new THREE.PointLight(0xffffff,2);
 
-        var pointLight = new THREE.PointLight(0xFFFFFF,2);
         // set its position
         pointLight.position.x = 0;
         pointLight.position.y = 0;
         pointLight.position.z = 0;
+
         // add to the scene
         scene.add(pointLight);
-        
-
 
         // instantiate a loader
         var texLoader = new THREE.TextureLoader();
-        var texture = texLoader.load("textures/mars.jpeg");
 
+        var texture = texLoader.load("textures/earth.jpg");
+        var texturesun = texLoader.load("textures/sun.jpg");
+        var texturemoon = texLoader.load("textures/moon.jpg");
 
-        // box
-        var geometry = new THREE.BoxGeometry(500, 500, 500);
+        //sun
+        var geometry = new THREE.SphereGeometry(100, 32, 32);
+        var material = new THREE.MeshBasicMaterial({
+            map: texturesun,
+        });
+        var sun = new THREE.Mesh(geometry, material);
+        scene.add(sun);
 
+        //earth
+        var geometry = new THREE.SphereGeometry(50, 32, 32);
         var material = new THREE.MeshPhongMaterial({
             map: texture
         });
+        var earth = new THREE.Mesh(geometry, material);
+        scene.add(earth);
+        earth.position.x = 200;
 
+        //moon
+        var geometry = new THREE.SphereGeometry(10, 32, 32);
+        var material = new THREE.MeshLambertMaterial({
+            map: texturemoon
+        });
+        var moon = new THREE.Mesh(geometry, material);
+        scene.add(moon);
+        moon.position.x = 300;
 
-//        var material = new THREE.MeshBasicMaterial( {color: 0x39C5BB} );
+        // box
+        var geometry = new THREE.BoxGeometry( 50, 50, 50 );
+        var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
         var cube = new THREE.Mesh( geometry, material );
         scene.add(cube);
-
         var pointLightBox = new THREE.PointLight(0xffffff,2);
 
         // set its position
-        pointLightBox.position.x = 0;
-        pointLightBox.position.y = 0;
-        pointLightBox.position.z = 0;
-        scene.add(pointLightBox);
+        pointLightBox.position.x = 50;
+        pointLightBox.position.y = 50;
+        pointLightBox.position.z = 50;
 
+        var pivot = new THREE.Group();
+        pivot.add(earth);
+        pivot.add(moon);
+
+        scene.add(pivot);
+        pivot.position.x = 250;
+
+        moon.position.x = 100;
+        earth.position.x = 0;
+
+        var pivot2 = new THREE.Group();
+        pivot2.add(pivot);
+        pivot2.add(sun);
+        scene.add(pivot2);
+        pivot2.position.x = 0;
 
         camera.position.z = 300;
         camera.position.x = 100;
 
-
-        // render funtion here
         var render = function () {
             requestAnimationFrame(render);
+            earth.rotation.y += 0.1;
+            moon.rotation.y += 0.1;
+            pivot.rotation.y += 0.005;
+            pivot2.rotation.y -= 0.005;
 
-            // customize here
-
-
-            // update camera controls
             controls.update();
-
-
             renderer.render(scene, camera);
         };
 
