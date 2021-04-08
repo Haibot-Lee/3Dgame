@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <title>cannon.js + three.js physics shooter</title>
+    <title>cannon.js + three.js physical shooter</title>
     <style>
         html,
         body {
@@ -313,7 +313,12 @@
             geometry = new THREE.PlaneGeometry(300, 300, 50, 50);
             geometry.applyMatrix(new THREE.Matrix4().makeRotationX(- Math.PI / 2));
 
-            material = new THREE.MeshLambertMaterial({ color: 0xdddddd });
+            //material = new THREE.MeshLambertMaterial({ color: 0xdddddd });
+            var texLoader = new THREE.TextureLoader();
+            var texture = texLoader.load("textures/8k_milkyWay.jpg");
+            material = new THREE.MeshBasicMaterial({
+                map: texture,
+            });
 
             mesh = new THREE.Mesh(geometry, material);
             mesh.castShadow = true;
@@ -331,15 +336,48 @@
             window.addEventListener('resize', onWindowResize, false);
 
             // Add boxes
-            var halfExtents = new CANNON.Vec3(1, 1, 1);
+            var boxSize = 20;
+            var halfExtents = new CANNON.Vec3(boxSize, boxSize, boxSize);
             var boxShape = new CANNON.Box(halfExtents);
             var boxGeometry = new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2);
 
-            for (var i = 0; i < 3; i++) {
-                var x = (Math.random() - 0.5) * 20;
-                var y = 1 + (Math.random() - 0.5) * 1;
-                var z = (Math.random() - 0.5) * 20;
-                var boxBody = new CANNON.Body({ mass: 5 });
+/*
+            var xBox = [], yBox = [], zbox = [];
+
+            xBox.push();
+            xBox.push();
+            xBox.push();
+            xBox.push();
+
+            yBox.push();
+            yBox.push();
+            yBox.push();
+            yBox.push();
+
+            zBox.push();
+            zBox.push();
+            zBox.push();
+            zBox.push();
+            */
+
+            // TODO: use boxes to make a boundary
+
+            var distance = 40;
+            var height = 20;
+            //for (var i = 0; i < 3; i++) {
+                var x = distance;
+                var y = height;
+                var z = 0;
+                
+                var boxBody = new CANNON.Body({ mass: 100 });
+
+                var texLoader = new THREE.TextureLoader();
+                var texture = texLoader.load("textures/8k_milkyWay.jpg");
+                material = new THREE.MeshBasicMaterial({
+                    map: texture,
+                });
+
+                //var material = new THREE.MeshLambertMaterial({ color: 0x39C5BB });
                 boxBody.addShape(boxShape);
                 var boxMesh = new THREE.Mesh(boxGeometry, material);
                 world.add(boxBody);
@@ -350,8 +388,64 @@
                 boxMesh.receiveShadow = true;
                 boxes.push(boxBody);
                 boxMeshes.push(boxMesh);
-            }
 
+
+                var x = 0;
+                var y = height;
+                var z = distance;
+                
+                var boxBody = new CANNON.Body({ mass: 100 });
+                boxBody.addShape(boxShape);
+                var boxMesh = new THREE.Mesh(boxGeometry, material);
+                world.add(boxBody);
+                scene.add(boxMesh);
+                boxBody.position.set(x, y, z);
+                boxMesh.position.set(x, y, z);
+                boxMesh.castShadow = true;
+                boxMesh.receiveShadow = true;
+                boxes.push(boxBody);
+                boxMeshes.push(boxMesh);
+
+
+
+                var x = -distance;
+                var y = height;
+                var z = 0;
+                
+                var boxBody = new CANNON.Body({ mass: 100 });
+                boxBody.addShape(boxShape);
+                var boxMesh = new THREE.Mesh(boxGeometry, material);
+                world.add(boxBody);
+                scene.add(boxMesh);
+                boxBody.position.set(x, y, z);
+                boxMesh.position.set(x, y, z);
+                boxMesh.castShadow = true;
+                boxMesh.receiveShadow = true;
+                boxes.push(boxBody);
+                boxMeshes.push(boxMesh);
+
+                
+
+                var x = 0;
+                var y = height;
+                var z = -distance;
+                
+                var boxBody = new CANNON.Body({ mass: 100 });
+                boxBody.addShape(boxShape);
+                var boxMesh = new THREE.Mesh(boxGeometry, material);
+                world.add(boxBody);
+                scene.add(boxMesh);
+                boxBody.position.set(x, y, z);
+                boxMesh.position.set(x, y, z);
+                boxMesh.castShadow = true;
+                boxMesh.receiveShadow = true;
+                boxes.push(boxBody);
+                boxMeshes.push(boxMesh);
+                
+            
+            //}
+
+            /*
             // Add linked boxes
             var size = 0.5;
             var he = new CANNON.Vec3(size, size, size * 0.1);
@@ -385,8 +479,26 @@
                 }
                 last = boxbody;
             }
+            */
 
         }
+        
+
+        /*
+        function setBox(world, scene, x, y, z) {
+            var boxBody = new CANNON.Body({ mass: 100 });
+            boxBody.addShape(boxShape);
+            var boxMesh = new THREE.Mesh(boxGeometry, material);
+            world.add(boxBody);
+            scene.add(boxMesh);
+            boxBody.position.set(x, y, z);
+            boxMesh.position.set(x, y, z);
+            boxMesh.castShadow = true;
+            boxMesh.receiveShadow = true;
+            boxes.push(boxBody);
+            boxMeshes.push(boxMesh);
+        }
+        */
 
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
