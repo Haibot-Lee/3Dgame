@@ -102,69 +102,69 @@
         });
         planetSizes[0] = 0.187 * unit;
 
-        //4: 月球 (Moon)
+        //4: Moon
         texture = texLoader.load("textures/moon.jpg");
         materials[1] = new THREE.MeshBasicMaterial({
             map: texture,
         });
         planetSizes[1] = 0.273 * unit;
 
-        //1: 水星 (Mercury)
+        //1: Mercury
         texture = texLoader.load("textures/mercury.jpeg");
         materials[2] = new THREE.MeshBasicMaterial({
             map: texture,
         });
         planetSizes[2] = 0.383 * unit;
 
-        //5: 火星 (Mars)
+        //5: Mars
         texture = texLoader.load("textures/mars.jpeg");
         materials[3] = new THREE.MeshBasicMaterial({
             map: texture,
         });
         planetSizes[3] = 0.532 * unit;
-        //2: 金星 (Venus)
+        //2: Venus
         texture = texLoader.load("textures/venus.jpeg");
         materials[4] = new THREE.MeshBasicMaterial({
             map: texture,
         });
         planetSizes[4] = 0.95 * unit;
-        //3: 地球 (Earth)
+        //3: Earth
         texture = texLoader.load("textures/earth.jpg");
         materials[5] = new THREE.MeshBasicMaterial({
             map: texture,
         });
         planetSizes[5] = unit;
 
-        //9: 海王星 (Neptune)
+        //9: Neptune
         texture = texLoader.load("textures/neptune.jpeg");
         materials[6] = new THREE.MeshBasicMaterial({
             map: texture,
         });
         planetSizes[6] = 3.87 * unit / 2;
-        //8: 天王星 (Uranus)
+        //8: Uranus
         texture = texLoader.load("textures/uranus.jpeg");
         materials[7] = new THREE.MeshBasicMaterial({
             map: texture,
         });
         planetSizes[7] = 3.98 * unit / 2;
-        //7: 土星 (Saturn) 
+        //7: Saturn
         texture = texLoader.load("textures/saturn.jpeg");
         materials[8] = new THREE.MeshBasicMaterial({
             map: texture,
         });
         planetSizes[8] = 9.14 * unit / 5;
-        //6: 木星 (Jupiter)
+        //6: Jupiter
         texture = texLoader.load("textures/jupiter.jpeg");
         materials[9] = new THREE.MeshBasicMaterial({
             map: texture,
         });
         planetSizes[9] = 10.97 * unit / 5;
-        //0: 太陽 (Sun)
+        //0: Sun
         var texture = texLoader.load("textures/sun.jpg");
-        materials[0] = new THREE.MeshBasicMaterial({
+        materials[10] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[0] = 190.25 * unit / 60;
+        planetSizes[10] = 190.25 * unit/50;
         
 
         var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
@@ -339,7 +339,7 @@
 
 
             var texLoader = new THREE.TextureLoader();
-            var texture = texLoader.load("textures/8k_milkyWay.jpg");
+            var texture = texLoader.load("textures/star.jpg");
 
             material = new THREE.MeshBasicMaterial({
                 map: texture,
@@ -398,8 +398,8 @@
 
             var boxBody = new CANNON.Body({ mass: 10000 });
 
-            var texLoader = new THREE.TextureLoader();
-            var texture = texLoader.load("textures/sun.jpg");
+            //var texLoader = new THREE.TextureLoader();
+            //var texture = texLoader.load("textures/sun.jpg");
             material = new THREE.MeshBasicMaterial({
                 map: texture,
             });
@@ -437,6 +437,23 @@
             boxMeshes.push(boxMesh);
 
 
+            var x = distance;
+            var y = height;
+            var z = distance;
+
+            var boxBody = new CANNON.Body({ mass: 10000 });
+            boxBody.addShape(boxShape);
+            var boxMesh = new THREE.Mesh(boxGeometry, material);
+            world.add(boxBody);
+            scene.add(boxMesh);
+            boxBody.position.set(x, y, z);
+            boxMesh.position.set(x, y, z);
+            boxMesh.castShadow = true;
+            boxMesh.receiveShadow = true;
+            boxes.push(boxBody);
+            boxMeshes.push(boxMesh);
+
+
             var x = -distance;
             var y = height;
             var z = 0;
@@ -453,6 +470,54 @@
             boxes.push(boxBody);
             boxMeshes.push(boxMesh);
 
+
+            var x = distance;
+            var y = height;
+            var z = -distance;
+
+            var boxBody = new CANNON.Body({ mass: 10000 });
+            boxBody.addShape(boxShape);
+            var boxMesh = new THREE.Mesh(boxGeometry, material);
+            world.add(boxBody);
+            scene.add(boxMesh);
+            boxBody.position.set(x, y, z);
+            boxMesh.position.set(x, y, z);
+            boxMesh.castShadow = true;
+            boxMesh.receiveShadow = true;
+            boxes.push(boxBody);
+            boxMeshes.push(boxMesh);
+
+            var x = -distance;
+            var y = height;
+            var z = distance;
+
+            var boxBody = new CANNON.Body({ mass: 10000 });
+            boxBody.addShape(boxShape);
+            var boxMesh = new THREE.Mesh(boxGeometry, material);
+            world.add(boxBody);
+            scene.add(boxMesh);
+            boxBody.position.set(x, y, z);
+            boxMesh.position.set(x, y, z);
+            boxMesh.castShadow = true;
+            boxMesh.receiveShadow = true;
+            boxes.push(boxBody);
+            boxMeshes.push(boxMesh);
+
+            var x = -distance;
+            var y = height;
+            var z = -distance;
+
+            var boxBody = new CANNON.Body({ mass: 10000 });
+            boxBody.addShape(boxShape);
+            var boxMesh = new THREE.Mesh(boxGeometry, material);
+            world.add(boxBody);
+            scene.add(boxMesh);
+            boxBody.position.set(x, y, z);
+            boxMesh.position.set(x, y, z);
+            boxMesh.castShadow = true;
+            boxMesh.receiveShadow = true;
+            boxes.push(boxBody);
+            boxMeshes.push(boxMesh);
 
 
             var x = 0;
@@ -584,11 +649,11 @@
                 //console.log(length - (cnt % length));
                 var length = planetSizes.length;
 
-                var ballShape = new CANNON.Sphere(planetSizes[cnt % 10]);
+                var ballShape = new CANNON.Sphere(planetSizes[cnt % length]);
 
                 ballBody.addShape(ballShape);
                 var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
-                var ballMesh = new THREE.Mesh(ballGeometry, materials[cnt % 10]);
+                var ballMesh = new THREE.Mesh(ballGeometry, materials[cnt % length]);
                 world.add(ballBody);
                 scene.add(ballMesh);
                 ballMesh.castShadow = true;
@@ -607,7 +672,8 @@
                 ballBody.position.set(x, y, z);
                 ballMesh.position.set(x, y, z);
             }
-            cnt = Math.floor(Math.random() * (3));
+            cnt++;
+            //cnt = Math.floor(Math.random() * (3));
         });
 
     </script><canvas width="1848" height="1428" style="width: 924px; height: 714px;"></canvas>
