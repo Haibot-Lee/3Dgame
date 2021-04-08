@@ -100,60 +100,71 @@
             map: texture,
         });
         planetSizes[0] = 190.25*unit/40;
-        //1: 水星 (Mercury)
-        texture = texLoader.load("textures/mercury.jpeg");
+        //6: 木星 (Jupiter)
+        texture = texLoader.load("textures/jupiter.jpeg");
         materials[1] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[1] = 0.383*unit;
-        //2: 金星 (Venus)
-        texture = texLoader.load("textures/venus.jpeg");
+        planetSizes[1] = 10.97*unit/5;
+        //7: 土星 (Saturn) 
+        texture = texLoader.load("textures/saturn.jpeg");
         materials[2] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[2] = 0.95*unit;
-        //3: 地球 (Earth)
-        texture = texLoader.load("textures/earth.jpg");
+        planetSizes[2] = 9.14*unit/5;
+
+        //8: 天王星 (Uranus)
+        texture = texLoader.load("textures/uranus.jpeg");
         materials[3] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[3] = unit;
-        //4: 月球 (Moon)
-        texture = texLoader.load("textures/moon.jpg");
+        planetSizes[3] = 3.98*unit/2;
+        //9: 海王星 (Neptune)
+        texture = texLoader.load("textures/neptune.jpeg");
         materials[4] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[4] = 0.273*unit;
-        //5: 火星 (Mars)
-        texture = texLoader.load("textures/mars.jpeg");
+        planetSizes[4] = 3.87*unit/2;
+        //3: 地球 (Earth)
+        texture = texLoader.load("textures/earth.jpg");
         materials[5] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[5] = 0.532*unit;
-        //6: 木星 (Jupiter)
-        texture = texLoader.load("textures/jupiter.jpeg");
+        planetSizes[5] = unit;
+        //2: 金星 (Venus)
+        texture = texLoader.load("textures/venus.jpeg");
         materials[6] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[6] = 10.97*unit/5;
-        //7: 土星 (Saturn) 
-        texture = texLoader.load("textures/saturn.jpeg");
+        planetSizes[6] = 0.95*unit;
+        //5: 火星 (Mars)
+        texture = texLoader.load("textures/mars.jpeg");
         materials[7] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[7] = 9.14*unit/5;
-        //8: 天王星 (Uranus)
-        texture = texLoader.load("textures/uranus.jpeg");
+        planetSizes[7] = 0.532*unit;
+        //1: 水星 (Mercury)
+        texture = texLoader.load("textures/mercury.jpeg");
         materials[8] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[8] = 3.98*unit/2;
-        //9: 海王星 (Neptune)
-        texture = texLoader.load("textures/neptune.jpeg");
+        planetSizes[8] = 0.383*unit;
+        
+        
+        //4: 月球 (Moon)
+        texture = texLoader.load("textures/moon.jpg");
         materials[9] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[9] = 3.87*unit/2;
+        planetSizes[9] = 0.273*unit;
+        
+        //10: Pluto
+        texture = texLoader.load("textures/pluto.jpg");
+        materials[10] = new THREE.MeshBasicMaterial({
+            map: texture,
+        });
+        planetSizes[10] = 0.187*unit;
+
   
 
         var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
@@ -388,7 +399,7 @@
                 var boxBody = new CANNON.Body({ mass: 10000 });
 
                 var texLoader = new THREE.TextureLoader();
-                var texture = texLoader.load("textures/8k_milkyWay.jpg");
+                var texture = texLoader.load("textures/stars.jpg");
                 material = new THREE.MeshBasicMaterial({
                     map: texture,
                 });
@@ -568,12 +579,16 @@
                 var ballBody = new CANNON.Body({ mass: 1 });
 
                 //var ballShape = new CANNON.Sphere(2 + 0.2 * (cnt % 10));
+                var length = planetSizes.length;
+                //console.log(cnt);
+                //console.log(length - (cnt % length));
+                var length = planetSizes.length;
             
-                var ballShape = new CANNON.Sphere(planetSizes[cnt % 10]);
+                var ballShape = new CANNON.Sphere(planetSizes[length - ((cnt - 1) % length) - 1]);
 
                 ballBody.addShape(ballShape);
                 var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
-                var ballMesh = new THREE.Mesh(ballGeometry, materials[cnt % 10]);
+                var ballMesh = new THREE.Mesh(ballGeometry, materials[length - ((cnt - 1) % length) - 1]);
                 world.add(ballBody);
                 scene.add(ballMesh);
                 ballMesh.castShadow = true;
