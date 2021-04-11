@@ -651,10 +651,22 @@
                 z += shootDirection.z * (sphereShape.radius * 1.02 + ballShape.radius);
                 ballBody.position.set(x, y, z);
                 ballMesh.position.set(x, y, z);
+
+                var collided=false;
+
+                ballBody.addEventListener("collide", function(e){ 
+                    console.log("collision")
+                    for(var i =0 ;i<balls.length;i++){
+                        if(Math.round(ballMeshes[i].position.distanceTo(ballMesh.position)*0.5)==Math.round(ballShape.radius)){
+                            console.log("same");
+                        }
+                    }
+                } );
             }
             //cnt++;
             cnt = Math.floor(Math.random() * 6);
         });
+
 
     </script><canvas width="1848" height="1428" style="width: 924px; height: 714px;"></canvas>
 
