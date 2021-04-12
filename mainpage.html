@@ -73,10 +73,9 @@
     <script src="js/cannon.js"></script>
     <script src="js/PointerLockControls.js"></script>
 
-    <div id="display">
-        <span id='score' style="font-size:40px">Score: </span>
+    <div id='display'>
+        <span id='score' style="font-size:30px">Score: </span>
         <br>
-        <span style="font-size:40px">The next planet: </span>
     </div>
 
     <div id="blocker">
@@ -96,7 +95,8 @@
         var controls, time = Date.now();
 
         var planetSizes = new Array();
-        var cnt = 0;
+        var cnt = -1;
+        var nextPlanet;
 
         var blocker = document.getElementById('blocker');
         var instructions = document.getElementById('instructions');
@@ -342,6 +342,11 @@
             controls = new PointerLockControls(camera, sphereBody);
             scene.add(controls.getObject());
 
+            //next planet
+            nextPlanet = new THREE.Mesh(new THREE.SphereGeometry(planetSizes[cnt % planetSizes.length], 32, 32), materials[cnt % planetSizes.length]);
+            scene.add(nextPlanet);
+            nextPlanet.position.set(0, 50, -20);
+
             // floor
             geometry = new THREE.PlaneGeometry(300, 300, 50, 50);
             geometry.applyMatrix(new THREE.Matrix4().makeRotationX(- Math.PI / 2));
@@ -511,7 +516,6 @@
             boxes.push(boxBody);
             boxMeshes.push(boxMesh);
 
-
             var x = 0;
             var y = height;
             var z = -distance;
@@ -552,8 +556,10 @@
                     boxMeshes[i].position.copy(boxes[i].position);
                     boxMeshes[i].quaternion.copy(boxes[i].quaternion);
                 }
-            }
 
+                // rotate next planet
+                nextPlanet.rotation.y += 0.02;
+            }
             controls.update(Date.now() - time);
             renderer.render(scene, camera);
             time = Date.now();
@@ -585,9 +591,7 @@
                     balls.push(ballBody);
                     ballMeshes.push(ballMesh);
 
-                    ballBody.velocity.set(0,
-                        0,
-                        0);
+                    ballBody.velocity.set(0, 0, 0);
 
                     ballBody.position.set(x, y, z);
                     ballMesh.position.set(x, y, z);
@@ -651,7 +655,7 @@
                         if (Math.round(ballMeshes[i].position.distanceTo(ballMesh.position) * 0.5) == Math.round(ballShape.radius)) {
                             console.log("same");
                             console.log("Master: " + i + "; Slave:" + cnt % length);
-                            if(i == cnt%length) {
+                            if (i == cnt % length) {
                                 console.log("Merge");
 
                                 /*
@@ -668,8 +672,14 @@
                 });
             }
             //cnt++;
-            //cnt = Math.floor(Math.random() * 6);
-            cnt == 1;
+            cnt = Math.floor(Math.random() * 6);
+            // cnt == 1;
+
+            scene.remove(nextPlanet);
+            nextPlanet = new THREE.Mesh(new THREE.SphereGeometry(planetSizes[cnt % planetSizes.length], 32, 32), materials[cnt % planetSizes.length]);
+            scene.add(nextPlanet);
+            nextPlanet.position.set(0, 50, -20);
+
         });
 
 
