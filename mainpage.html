@@ -544,12 +544,64 @@
         var removeIndex = [];
         var collidePairs = [];
 
-        var addBody = [];
-        var addMesh = [];
+        //var addBody = [];
+        //var addMesh = [];
+
+        var upgradeIndex = [];
 
         function animate() {
             requestAnimationFrame(animate);
             if (controls.enabled) {
+                while (upgradeIndex.length > 0) {
+                    /*
+                    var found = false;
+                    collidePairs.forEach(pair => {
+                        pair.forEach(element => {
+                            if (colliderID == element) {
+                                found = true;
+                            }
+                        });
+                    });
+                    if (!found) {
+                        collidePairs.push([colliderID, collideeID]);
+                        removeIndex.push(colliderIndex);
+
+                        for (var i = 0; i < balls.length; i++) {
+                            if (balls[i].id == collideeID) {
+                                upgradeIndex.push(i);
+                            }
+                        }
+                    }*/
+
+                    collidePairs.pop();
+
+                    var tempIndex = upgradeIndex.pop();
+
+                    var radius = balls[tempIndex].shapes[0].radius;
+                    var newIndex = planetSizes.indexOf(radius) + 1;
+                    radius = planetSizes[newIndex];
+
+
+                    //console.log(tempIndex);
+                    //console.log(ballMeshes[tempIndex]);
+                    console.log(balls[tempIndex]);
+
+                    balls[tempIndex].position.y += radius;
+                    //balls[tempIndex].shapes[0] = new CANNON.Sphere(radius);
+
+                    balls[tempIndex].shapes = [];
+                    balls[tempIndex].addShape(new CANNON.Sphere(radius));
+
+
+
+                    ballMeshes[tempIndex].material = materials[newIndex];
+                    ballMeshes[tempIndex].geometry = new THREE.SphereGeometry(radius, 32, 32);
+                    //balls[tempIndex].velocity.set(0, 0, 0);
+                    ballMeshes[tempIndex].position.y = balls[tempIndex].position.y;
+
+                    console.log(balls[tempIndex]);
+                }
+
                 while (removeIndex.length > 0) {
                     var tempIndex = removeIndex.pop();
 
@@ -558,20 +610,12 @@
 
                     balls.splice(tempIndex, 1);
                     ballMeshes.splice(tempIndex, 1);
+
+                    console.log("remove " + tempIndex);
                 }
 
 
-                while (addBody.length > 0) {
-                    var tempBody = addBody.pop();
-                    var tempMesh = addMesh.pop();
 
-
-                    world.add(tempBody);
-                    scene.add(tempMesh);
-
-                    balls.push(tempBody);
-                    ballMeshes.push(tempMesh);
-                }
 
                 world.step(dt);
 
@@ -618,6 +662,12 @@
             if (!found) {
                 collidePairs.push([colliderID, collideeID]);
                 removeIndex.push(colliderIndex);
+
+                for (var i = 0; i < balls.length; i++) {
+                    if (balls[i].id == collideeID) {
+                        upgradeIndex.push(i);
+                    }
+                }
             }
         }
 
@@ -656,50 +706,20 @@
                 var collided = false;
 
                 ballBody.addEventListener("collide", function (e) {
-                    if (e.body.shapes[0].radius != null) {
+                    if (e.body.shapes[0].radius != null && e.body.shapes[0].radius != planetSizes[10]) {
                         if (ballBody.shapes[0].radius == e.body.shapes[0].radius) {
                             for (var i = 0; i < balls.length; i++) {
                                 if (balls[i].id == e.target.id) {
                                     addCollidePairs(e.target.id, e.body.id, i);
                                 }
                             }
-
-
-                            /*
-
-                            // create a new ball
-                            var length = planetSizes.length;
-
-                            var x = e.target.position.x;
-                            var y = e.target.position.y;
-                            var z = e.target.position.z;
-
-                            var newBallBody = new CANNON.Body({ mass: 1 });
-                            var newBallShape = new CANNON.Sphere(planetSizes[10]);
-                            newBallBody.addShape(newBallShape);
-                            var newBallGeometry = new THREE.SphereGeometry(newBallShape.radius, 32, 32);
-                            var newBallMesh = new THREE.Mesh(newBallGeometry, materials[10]);
-
-                            // here?
-                            newBallMesh.castShadow = true;
-                            newBallMesh.receiveShadow = true;
-
-                            newBallBody.velocity.set(0,
-                                0,
-                                0);
-
-                            newBallBody.position.set(x, y, z);
-                            newBallMesh.position.set(x, y, z);
-
-                            addBody.push(newBallBody);
-                            addMesh.push(newBallMesh);*/
                         }
                     }
                 });
             }
             //cnt++;
-            cnt = Math.floor(Math.random() * 3);
-            // cnt == 1;
+            //cnt = Math.floor(Math.random() * 3);
+            cnt = 9;
 
             scene.remove(nextPlanet);
             nextPlanet = new THREE.Mesh(new THREE.SphereGeometry(planetSizes[cnt % planetSizes.length], 32, 32), materials[cnt % planetSizes.length]);
