@@ -57,6 +57,13 @@
             cursor: pointer;
 
         }
+
+        #display {
+            color: #ffffff;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 
@@ -66,14 +73,18 @@
     <script src="js/cannon.js"></script>
     <script src="js/PointerLockControls.js"></script>
 
-    <div id="blocker">
+    <div id="display">
+        <span id='score' style="font-size:40px">Score: </span>
+        <br>
+        <span style="font-size:40px">The next planet: </span>
+    </div>
 
+    <div id="blocker">
         <div id="instructions">
             <span style="font-size:40px">Click to play</span>
             <br>
             (MOUSE = Look, CLICK = Shoot)
         </div>
-
     </div>
 
     <script>
@@ -100,28 +111,28 @@
         materials[0] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[0] = 0.187 * unit*2;
+        planetSizes[0] = 0.187 * unit * 2;
 
         //4: Moon
         texture = texLoader.load("textures/moon.jpg");
         materials[1] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[1] = 0.273 * unit*2;
+        planetSizes[1] = 0.273 * unit * 2;
 
         //1: Mercury
         texture = texLoader.load("textures/mercury.jpeg");
         materials[2] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[2] = 0.383 * unit*2;
+        planetSizes[2] = 0.383 * unit * 2;
 
         //5: Mars
         texture = texLoader.load("textures/mars.jpeg");
         materials[3] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[3] = 0.532 * unit *1.5;
+        planetSizes[3] = 0.532 * unit * 1.5;
         //2: Venus
         texture = texLoader.load("textures/venus.jpeg");
         materials[4] = new THREE.MeshBasicMaterial({
@@ -164,8 +175,8 @@
         materials[10] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[10] = 190.25 * unit/80;
-        
+        planetSizes[10] = 190.25 * unit / 80;
+
 
         var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
@@ -185,10 +196,7 @@
 
                     controls.enabled = false;
 
-                    blocker.style.display = '-webkit-box';
-                    blocker.style.display = '-moz-box';
-                    blocker.style.display = 'box';
-
+                    blocker.style.display = '';
                     instructions.style.display = '';
 
                 }
@@ -563,7 +571,7 @@
                     var ballBody = new CANNON.Body({ mass: 1 });
 
                     var length = planetSizes.length;
-                    
+
                     var ballShape = new CANNON.Sphere(planetSizes[cnt % length]);
 
                     ballBody.addShape(ballShape);
@@ -571,7 +579,7 @@
                     var ballMesh = new THREE.Mesh(ballGeometry, materials[cnt % length]);
                     world.add(ballBody);
                     scene.add(ballMesh);
-                    
+
                     ballMesh.castShadow = true;
                     ballMesh.receiveShadow = true;
                     balls.push(ballBody);
@@ -618,7 +626,7 @@
                 var ballMesh = new THREE.Mesh(ballGeometry, materials[cnt % length]);
                 world.add(ballBody);
                 scene.add(ballMesh);
-                
+
                 ballMesh.castShadow = true;
                 ballMesh.receiveShadow = true;
                 balls.push(ballBody);
@@ -635,12 +643,12 @@
                 ballBody.position.set(x, y, z);
                 ballMesh.position.set(x, y, z);
 
-                var collided=false;
+                var collided = false;
 
-                ballBody.addEventListener("collide", function(e){ 
+                ballBody.addEventListener("collide", function (e) {
                     console.log("collision")
-                    for(var i =0 ;i<balls.length;i++){
-                        if(Math.round(ballMeshes[i].position.distanceTo(ballMesh.position)*0.5)==Math.round(ballShape.radius)){
+                    for (var i = 0; i < balls.length; i++) {
+                        if (Math.round(ballMeshes[i].position.distanceTo(ballMesh.position) * 0.5) == Math.round(ballShape.radius)) {
                             console.log("same");
                             console.log("Master: " + i + "; Slave:" + cnt % length);
                             if(i == cnt%length) {
@@ -657,7 +665,7 @@
                             }
                         }
                     }
-                } );
+                });
             }
             //cnt++;
             //cnt = Math.floor(Math.random() * 6);
