@@ -540,10 +540,9 @@
         }
 
         var dt = 1 / 60;
-        //var removeBody = [];
-        //var removeMesh = [];
 
         var removeIndex = [];
+        var collidePairs = [];
 
         var addBody = [];
         var addMesh = [];
@@ -552,46 +551,13 @@
             requestAnimationFrame(animate);
             if (controls.enabled) {
                 while (removeIndex.length > 0) {
-                //while (removeBody.length > 0) {
-                    //console.log(removeBody.length);
-                    //var tempBody = removeBody.pop();
-                    //var tempMesh = removeMesh.pop();
-
-                    //var tempBodyIndex = balls.indexOf(tempBody);
-                    //console.log(tempBodyIndex); 
-                    //var tempMeshIndex = ballMeshes.indexOf(tempMesh);
-                    //console.log(tempMeshIndex);
-
-                    //console.log("Index: " + tempBodyIndex + " " + tempMeshIndex);
-
-                    //console.log("Prev Length: " + balls.length + " " + ballMeshes.length);
-
-                    /*
-                    world.remove(tempBody);
-                    scene.remove(tempMesh);
-                    */
-
                     var tempIndex = removeIndex.pop();
-                    //var tempMeshIndex = removeMesh.pop();
 
                     world.remove(balls[tempIndex]);
                     scene.remove(ballMeshes[tempIndex]);
 
                     balls.splice(tempIndex, 1);
                     ballMeshes.splice(tempIndex, 1);
-
-                    //console.log("Curr Length: " + balls.length + " " + ballMeshes.length);
-
-                    //console.log("remove " + tempBody.id);
-
-                    /*
-                    console.log("Array start");
-                    //console.log(ballBody.id);
-                    for (var i = 0; i < balls.length; i++) {
-                        console.log(balls[i]);
-                    }
-                    console.log("Array end");
-                    */
                 }
 
 
@@ -640,6 +606,21 @@
             targetVec.copy(ray.direction);
         }
 
+        function addCollidePairs(colliderID, collideeID, colliderIndex) {
+            var found = false;
+            collidePairs.forEach(pair => {
+                pair.forEach(element => {
+                    if (colliderID == element) {
+                        found = true;
+                    }
+                });
+            });
+            if (!found) {
+                collidePairs.push([colliderID, collideeID]);
+                removeIndex.push(colliderIndex);
+            }
+        }
+
         window.addEventListener("click", function (e) {
             if (controls.enabled == true) {
                 var length = planetSizes.length;
@@ -673,41 +654,18 @@
                 ballMesh.position.set(x, y, z);
 
                 var collided = false;
-                /*
-                console.log("Array start"); 
-                //console.log(ballBody.id);
-                for (var i = 0; i < balls.length; i++) {
-                    console.log(balls[i]);        
-                }
-                console.log("Array end");  
-                //console.log(balls);
-                //console.log(balls.length);
-                //console.log(ballMeshes);
-                */
 
                 ballBody.addEventListener("collide", function (e) {
                     if (e.body.shapes[0].radius != null) {
-                        //console.log(ballBody);
                         if (ballBody.shapes[0].radius == e.body.shapes[0].radius) {
-                            //removeBody.push(e.target);
-                            //var meshid;
                             for (var i = 0; i < balls.length; i++) {
                                 if (balls[i].id == e.target.id) {
-                                    removeIndex.push(i);
-                                    //meshid = i;
+                                    addCollidePairs(e.target.id, e.body.id, i);
                                 }
                             }
 
-                            //removeMesh.push(ballMeshes[meshid]);
-                            
-                            
 
-                            //console.log(e.target.id);
-                            //console.log("Collide!");
-                            //console.log(ballMeshes);
-
-
-/*
+                            /*
 
                             // create a new ball
                             var length = planetSizes.length;
