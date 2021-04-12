@@ -104,7 +104,7 @@
         var materials = new Array();
         var texLoader = new THREE.TextureLoader();
 
-        var unit = 5;
+        var unit = 4.2;
 
         //10: Pluto
         texture = texLoader.load("textures/pluto.jpg");
@@ -175,7 +175,7 @@
         materials[10] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[10] = 190.25 * unit / 80;
+        planetSizes[10] = 190.25 * unit / 75;
 
 
         var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
@@ -589,7 +589,8 @@
 
                     balls[tempIndex].shapes = [];
                     balls[tempIndex].addShape(new CANNON.Sphere(radius));
-                    balls[tempIndex].mass = newIndex + 1;
+                    //balls[tempIndex].mass = newIndex + 1;
+                    balls[tempIndex].mass = radius;
                     
                     
                     balls[tempIndex].velocity.set(0,
@@ -683,7 +684,8 @@
                 var y = sphereBody.position.y;
                 var z = sphereBody.position.z;
 
-                var ballBody = new CANNON.Body({ mass: cnt % length + 1 });
+                //var ballBody = new CANNON.Body({ mass: cnt % length + 1 });
+                var ballBody = new CANNON.Body({ mass: planetSizes[cnt % length] });
                 var ballShape = new CANNON.Sphere(planetSizes[cnt % length]);
                 ballBody.addShape(ballShape);
                 var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
