@@ -541,6 +541,7 @@
 
         var dt = 1 / 60;
         var removeBody;
+        var removeMesh;
         function animate() {
             requestAnimationFrame(animate);
             if (controls.enabled) {
@@ -663,14 +664,12 @@
 
                     if (e.body.shapes[0].radius != null) {
                         if (ballBody.shapes[0].radius == e.body.shapes[0].radius) {
-                            removeBody = ballBody;
-                            removeMesh = ballMesh;
-                            console.log("same");
-                            console.log("Master: " + i + "; Slave:" + cnt % length);
-                            if (i == cnt % length) {
-                                console.log("Merge");
-                            }
+                            removeBody=e.target;
+                            removeMesh=ballMeshes[e.target.id];
 
+                            console.log(e.target.id);
+                            console.log(balls);
+                            console.log(ballMeshes);
                         }
                     }
                 });
