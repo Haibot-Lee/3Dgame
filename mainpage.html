@@ -163,13 +163,13 @@
         materials[8] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[8] = 9.14 * unit / 7;
+        planetSizes[8] = 9.14 * unit / 4;
         //6: Jupiter
         texture = texLoader.load("textures/jupiter.jpeg");
         materials[9] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[9] = 10.97 * unit / 8;
+        planetSizes[9] = 10.97 * unit / 4;
         //0: Sun
         var texture = texLoader.load("textures/sun.jpg");
         materials[10] = new THREE.MeshBasicMaterial({
@@ -577,16 +577,19 @@
 
                     var tempIndex = upgradeIndex.pop();
 
+                    console.log(balls[tempIndex]);
+
                     var radius = balls[tempIndex].shapes[0].radius;
                     var newIndex = planetSizes.indexOf(radius) + 1;
                     radius = planetSizes[newIndex];
 
-                    console.log(balls[tempIndex]);
+                    
 
                     balls[tempIndex].position.y += radius;
 
                     balls[tempIndex].shapes = [];
                     balls[tempIndex].addShape(new CANNON.Sphere(radius));
+                    balls[tempIndex].mass = newIndex + 1;
                     
                     
                     balls[tempIndex].velocity.set(0,
@@ -680,7 +683,7 @@
                 var y = sphereBody.position.y;
                 var z = sphereBody.position.z;
 
-                var ballBody = new CANNON.Body({ mass: 1 });
+                var ballBody = new CANNON.Body({ mass: cnt % length + 1 });
                 var ballShape = new CANNON.Sphere(planetSizes[cnt % length]);
                 ballBody.addShape(ballShape);
                 var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
