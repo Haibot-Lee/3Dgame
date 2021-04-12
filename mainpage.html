@@ -540,20 +540,41 @@
         }
 
         var dt = 1 / 60;
-        var removeBody;
-        var removeMesh;
+        var removeBody = [];
+        var removeMesh = [];
         function animate() {
             requestAnimationFrame(animate);
             if (controls.enabled) {
-                if (removeBody != null) {
-                    world.remove(removeBody);
-                    scene.remove(removeMesh);
-                    balls.pop(removeBody);
-                    ballMeshes.pop(removeMesh);
-                    console.log("removed");
-                    removeBody = null;
-                    removeMesh = null;
+                
+                while (removeBody.length > 0) {
+                    //console.log(removeBody.length);
+                    var tempBody = removeBody.pop();
+                    var tempMesh = removeMesh.pop();
+
+                    world.remove(tempBody);
+                    scene.remove(tempMesh);
+
+                    var tempBodyIndex = balls.indexOf(tempBody);
+                    console.log(tempBodyIndex); 
+                    var tempMeshIndex = ballMeshes.indexOf(tempMesh);
+                    console.log(tempMeshIndex);
+
+                    balls.slice(tempBodyIndex, 1);
+                    
+                    ballMeshes.slice(tempMeshIndex, 1);
+
+                    console.log("Length: " + balls.length + " " +  ballMeshes.length);
+
+                    console.log("remove " + tempBody.id);
+
+                    console.log("Array start"); 
+                    //console.log(ballBody.id);
+                    for (var i = 0; i < balls.length; i++) {
+                        console.log(balls[i]);        
+                    }
+                    console.log("Array end"); 
                 }
+
                 world.step(dt);
 
                 // Update ball positions
@@ -576,40 +597,6 @@
             time = Date.now();
         }
 
-        function checkMerge() {
-            for (var j = 0; j < balls.length; j++) {
-                for (var i = 0; i < balls.length; i++) {
-                    //if () {
-
-                    //}
-                    var x = sphereBody.position.x;
-                    var y = sphereBody.position.y;
-                    var z = sphereBody.position.z;
-                    var ballBody = new CANNON.Body({ mass: 1 });
-
-                    var length = planetSizes.length;
-
-                    var ballShape = new CANNON.Sphere(planetSizes[cnt % length]);
-
-                    ballBody.addShape(ballShape);
-                    var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
-                    var ballMesh = new THREE.Mesh(ballGeometry, materials[cnt % length]);
-                    world.add(ballBody);
-                    scene.add(ballMesh);
-
-                    ballMesh.castShadow = true;
-                    ballMesh.receiveShadow = true;
-                    balls.push(ballBody);
-                    ballMeshes.push(ballMesh);
-
-                    ballBody.velocity.set(0, 0, 0);
-
-                    ballBody.position.set(x, y, z);
-                    ballMesh.position.set(x, y, z);
-                }
-            }
-        }
-
         var shootDirection = new THREE.Vector3();
         var shootVelo = 15;
         var projector = new THREE.Projector();
@@ -623,19 +610,14 @@
 
         window.addEventListener("click", function (e) {
             if (controls.enabled == true) {
+                var length = planetSizes.length;
+
                 var x = sphereBody.position.x;
                 var y = sphereBody.position.y;
                 var z = sphereBody.position.z;
+
                 var ballBody = new CANNON.Body({ mass: 1 });
-
-                //var ballShape = new CANNON.Sphere(2 + 0.2 * (cnt % 10));
-                var length = planetSizes.length;
-                //console.log(cnt);
-                //console.log(length - (cnt % length));
-                //var length = planetSizes.length;
-
                 var ballShape = new CANNON.Sphere(planetSizes[cnt % length]);
-
                 ballBody.addShape(ballShape);
                 var ballGeometry = new THREE.SphereGeometry(ballShape.radius, 32, 32);
                 var ballMesh = new THREE.Mesh(ballGeometry, materials[cnt % length]);
@@ -659,17 +641,35 @@
                 ballMesh.position.set(x, y, z);
 
                 var collided = false;
+/*
+                console.log("Array start"); 
+                //console.log(ballBody.id);
+                for (var i = 0; i < balls.length; i++) {
+                    console.log(balls[i]);        
+                }
+                console.log("Array end");  
+                //console.log(balls);
+                //console.log(balls.length);
+                //console.log(ballMeshes);
+            */
 
                 ballBody.addEventListener("collide", function (e) {
-
                     if (e.body.shapes[0].radius != null) {
                         if (ballBody.shapes[0].radius == e.body.shapes[0].radius) {
-                            removeBody=e.target;
-                            removeMesh=ballMeshes[e.target.id];
+                            removeBody.push(e.target);
+
+                            var meshid;
+                            for (var i = 0; i < balls.length; i++) {
+                                if (balls[i].id == e.target.id) {
+                                    meshid = i;
+                                }
+                            }
+
+                            removeMesh.push(ballMeshes[meshid]);
 
                             console.log(e.target.id);
-                            console.log(balls);
-                            console.log(ballMeshes);
+                            console.log("Collide!");
+                            //console.log(ballMeshes);
                         }
                     }
                 });
