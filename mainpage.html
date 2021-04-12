@@ -581,16 +581,17 @@
                     var newIndex = planetSizes.indexOf(radius) + 1;
                     radius = planetSizes[newIndex];
 
-
-                    //console.log(tempIndex);
-                    //console.log(ballMeshes[tempIndex]);
                     console.log(balls[tempIndex]);
 
                     balls[tempIndex].position.y += radius;
-                    //balls[tempIndex].shapes[0] = new CANNON.Sphere(radius);
 
                     balls[tempIndex].shapes = [];
                     balls[tempIndex].addShape(new CANNON.Sphere(radius));
+                    
+                    
+                    balls[tempIndex].velocity.set(0,
+                    0,
+                    0);
 
 
 
@@ -718,8 +719,8 @@
                 });
             }
             //cnt++;
-            //cnt = Math.floor(Math.random() * 3);
-            cnt = 9;
+            //cnt = Math.floor(Math.random() * 6);
+            cnt = 5;
 
             scene.remove(nextPlanet);
             nextPlanet = new THREE.Mesh(new THREE.SphereGeometry(planetSizes[cnt % planetSizes.length], 32, 32), materials[cnt % planetSizes.length]);
