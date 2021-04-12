@@ -545,7 +545,7 @@
         function animate() {
             requestAnimationFrame(animate);
             if (controls.enabled) {
-                
+
                 while (removeBody.length > 0) {
                     //console.log(removeBody.length);
                     var tempBody = removeBody.pop();
@@ -555,25 +555,27 @@
                     scene.remove(tempMesh);
 
                     var tempBodyIndex = balls.indexOf(tempBody);
-                    console.log(tempBodyIndex); 
+                    //console.log(tempBodyIndex); 
                     var tempMeshIndex = ballMeshes.indexOf(tempMesh);
-                    console.log(tempMeshIndex);
+                    //console.log(tempMeshIndex);
 
                     console.log("Index: " + tempBodyIndex + " " + tempMeshIndex);
 
-                    balls = balls.slice(tempBodyIndex, 1);
-                    ballMeshes = ballMeshes.slice(tempMeshIndex, 1);
+                    console.log("Prev Length: " + balls.length + " " + ballMeshes.length);
 
-                    console.log("Length: " + balls.length + " " +  ballMeshes.length);
+                    balls.splice(tempBodyIndex, 1);
+                    ballMeshes.splice(tempMeshIndex, 1);
+
+                    console.log("Curr Length: " + balls.length + " " + ballMeshes.length);
 
                     console.log("remove " + tempBody.id);
 
-                    console.log("Array start"); 
+                    console.log("Array start");
                     //console.log(ballBody.id);
                     for (var i = 0; i < balls.length; i++) {
-                        console.log(balls[i]);        
+                        console.log(balls[i]);
                     }
-                    console.log("Array end"); 
+                    console.log("Array end");
                 }
 
                 world.step(dt);
@@ -642,17 +644,17 @@
                 ballMesh.position.set(x, y, z);
 
                 var collided = false;
-/*
-                console.log("Array start"); 
-                //console.log(ballBody.id);
-                for (var i = 0; i < balls.length; i++) {
-                    console.log(balls[i]);        
-                }
-                console.log("Array end");  
-                //console.log(balls);
-                //console.log(balls.length);
-                //console.log(ballMeshes);
-            */
+                /*
+                                console.log("Array start"); 
+                                //console.log(ballBody.id);
+                                for (var i = 0; i < balls.length; i++) {
+                                    console.log(balls[i]);        
+                                }
+                                console.log("Array end");  
+                                //console.log(balls);
+                                //console.log(balls.length);
+                                //console.log(ballMeshes);
+                            */
 
                 ballBody.addEventListener("collide", function (e) {
                     if (e.body.shapes[0].radius != null) {
