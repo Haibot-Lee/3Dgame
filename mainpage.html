@@ -536,9 +536,19 @@
         }
 
         var dt = 1 / 60;
+        var removeBody;
         function animate() {
             requestAnimationFrame(animate);
             if (controls.enabled) {
+                if(removeBody!=null) {
+                    world.remove(removeBody);
+                    scene.remove(removeMesh);
+                    balls.pop(removeBody);
+                    ballMeshes.pop(removeMesh);
+                    console.log("removed");
+                    removeBody=null;
+                    removeMesh=null;
+                }
                 world.step(dt);
 
                 // Update ball positions
@@ -646,28 +656,25 @@
                 var collided = false;
 
                 ballBody.addEventListener("collide", function (e) {
-                    console.log("collision")
-                    for (var i = 0; i < balls.length; i++) {
-                        if (Math.round(ballMeshes[i].position.distanceTo(ballMesh.position) * 0.5) == Math.round(ballShape.radius)) {
+                    //console.log(e.body)
+                    
+                    if(e.body.shapes[0].radius!=null){
+                        if (ballBody.shapes[0].radius==e.body.shapes[0].radius) {
+                            removeBody=ballBody;
+                            removeMesh=ballMesh;
                             console.log("same");
-                            console.log("Master: " + i + "; Slave:" + cnt % length);
-                            if(i == cnt%length) {
-                                console.log("Merge");
 
-                                world.remove(balls[i]);
-                                scene.remove(ballMeshes[i]);
+
+console.log("previous:" +ballMesh.texture+" "+ballBody.shapes[0].radius+" now:"+e.body.shapes[0].radius)
                                 
-                                balls.pop(balls[i]);
-                                ballMeshes.pop(ballMeshes[i]);
+                                
                             
-                            }
                         }
                     }
                 });
             }
             //cnt++;
-            //cnt = Math.floor(Math.random() * 6);
-            cnt == 1;
+            cnt = Math.floor(Math.random() * 6);
         });
 
 
