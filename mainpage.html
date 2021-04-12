@@ -529,23 +529,6 @@
             boxMeshes.push(boxMesh);
         }
 
-
-        /*
-        function setBox(world, scene, x, y, z) {
-            var boxBody = new CANNON.Body({ mass: 100 });
-            boxBody.addShape(boxShape);
-            var boxMesh = new THREE.Mesh(boxGeometry, material);
-            world.add(boxBody);
-            scene.add(boxMesh);
-            boxBody.position.set(x, y, z);
-            boxMesh.position.set(x, y, z);
-            boxMesh.castShadow = true;
-            boxMesh.receiveShadow = true;
-            boxes.push(boxBody);
-            boxMeshes.push(boxMesh);
-        }
-        */
-
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
@@ -667,12 +650,26 @@
                     for (var i = 0; i < balls.length; i++) {
                         if (Math.round(ballMeshes[i].position.distanceTo(ballMesh.position) * 0.5) == Math.round(ballShape.radius)) {
                             console.log("same");
+                            console.log("Master: " + i + "; Slave:" + cnt % length);
+                            if(i == cnt%length) {
+                                console.log("Merge");
+
+                                /*
+                                world.remove(balls[i]);
+                                scene.remove(ballMeshes[i]);
+                                
+                                balls.pop(balls[i]);
+                                ballMeshes.pop(ballMeshes[i]);
+                                */
+
+                            }
                         }
                     }
                 });
             }
             //cnt++;
-            cnt = Math.floor(Math.random() * 6);
+            //cnt = Math.floor(Math.random() * 6);
+            cnt == 1;
         });
 
 
