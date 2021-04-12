@@ -544,14 +544,14 @@
         function animate() {
             requestAnimationFrame(animate);
             if (controls.enabled) {
-                if(removeBody!=null) {
+                if (removeBody != null) {
                     world.remove(removeBody);
                     scene.remove(removeMesh);
                     balls.pop(removeBody);
                     ballMeshes.pop(removeMesh);
                     console.log("removed");
-                    removeBody=null;
-                    removeMesh=null;
+                    removeBody = null;
+                    removeMesh = null;
                 }
                 world.step(dt);
 
@@ -660,32 +660,23 @@
                 var collided = false;
 
                 ballBody.addEventListener("collide", function (e) {
-                    //console.log(e.body)
-                    
-                    if(e.body.shapes[0].radius!=null){
-                        if (ballBody.shapes[0].radius==e.body.shapes[0].radius) {
-                            removeBody=ballBody;
-                            removeMesh=ballMesh;
+
+                    if (e.body.shapes[0].radius != null) {
+                        if (ballBody.shapes[0].radius == e.body.shapes[0].radius) {
+                            removeBody = ballBody;
+                            removeMesh = ballMesh;
                             console.log("same");
-<<<<<<< HEAD
                             console.log("Master: " + i + "; Slave:" + cnt % length);
                             if (i == cnt % length) {
                                 console.log("Merge");
-=======
->>>>>>> 3969ffc4b3e98006a5c2c0f64584b40b995087f3
+                            }
 
-
-console.log("previous:" +ballMesh.texture+" "+ballBody.shapes[0].radius+" now:"+e.body.shapes[0].radius)
-                                
-                                
-                            
                         }
                     }
                 });
             }
             //cnt++;
             cnt = Math.floor(Math.random() * 6);
-<<<<<<< HEAD
             // cnt == 1;
 
             scene.remove(nextPlanet);
@@ -693,8 +684,7 @@ console.log("previous:" +ballMesh.texture+" "+ballBody.shapes[0].radius+" now:"+
             scene.add(nextPlanet);
             nextPlanet.position.set(0, 50, -20);
 
-=======
->>>>>>> 3969ffc4b3e98006a5c2c0f64584b40b995087f3
+
         });
 
 
