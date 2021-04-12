@@ -559,9 +559,10 @@
                     var tempMeshIndex = ballMeshes.indexOf(tempMesh);
                     console.log(tempMeshIndex);
 
-                    balls.slice(tempBodyIndex, 1);
-                    
-                    ballMeshes.slice(tempMeshIndex, 1);
+                    console.log("Index: " + tempBodyIndex + " " + tempMeshIndex);
+
+                    balls = balls.slice(tempBodyIndex, 1);
+                    ballMeshes = ballMeshes.slice(tempMeshIndex, 1);
 
                     console.log("Length: " + balls.length + " " +  ballMeshes.length);
 
