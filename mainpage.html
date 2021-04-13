@@ -724,8 +724,8 @@
                 });
             }
             //cnt++;
-            //cnt = Math.floor(Math.random() * 6);
-            cnt = 5;
+            cnt = Math.floor(Math.random() * 6);
+            //cnt = 5;
 
             scene.remove(nextPlanet);
             nextPlanet = new THREE.Mesh(new THREE.SphereGeometry(planetSizes[cnt % planetSizes.length], 32, 32), materials[cnt % planetSizes.length]);
