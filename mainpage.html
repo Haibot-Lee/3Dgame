@@ -192,6 +192,10 @@
 
                     blocker.style.display = 'none';
 
+                    new Audio("./sounds/bgm.mp3").play().addEventListener("ended",function(){
+                        Audio.play();
+                    });
+
                 } else {
 
                     controls.enabled = false;
@@ -322,7 +326,7 @@
 
             // Create a sphere
             // change mass to hover the camera
-            var mass = 0, radius = 1.3;
+            var mass = 1, radius = 1.3;
             sphereShape = new CANNON.Sphere(radius);
             sphereBody = new CANNON.Body({ mass: mass });
             sphereBody.addShape(sphereShape);
@@ -587,6 +591,7 @@
                             for (var i = 0; i < balls.length; i++) {
                                 if (balls[i].id == e.target.id) {
                                     addCollidePairs(e.target.id, e.body.id, i);
+                                    new Audio("./sounds/damage7.mp3").play()
                                 }
                             }
                         }
