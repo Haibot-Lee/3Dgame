@@ -163,8 +163,10 @@
 
                     blocker.style.display = 'none';
 
-                    new Audio("./sounds/bgm.mp3").play().addEventListener("ended", function () {
-                        Audio.play();
+                    var bgm = new Audio("./sounds/bgm.mp3");
+                    bgm.play()
+                    bgm.addEventListener("ended", function () {
+                        bgm.play();
                     });
 
                 } else {
