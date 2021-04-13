@@ -80,7 +80,7 @@
         <span style="font-size:30px">Next planet: </span>
         <span id='planetName' style="font-size:30px"></span>
         <br>
-        <img id='planetImg' src="textures/pluto.jpg" width="100" height="100" style="border-radius: 50px">
+        <img id='planetImg' src="textures/pluto.jpeg" width="100" height="100" style="border-radius: 50px">
 
     </div>
 
@@ -123,6 +123,7 @@
             materials[i] = new THREE.MeshLambertMaterial({
                 map: texture,
             });
+            
         }
 
         //Pluto
@@ -163,17 +164,16 @@
 
                     blocker.style.display = 'none';
 
-                    new Audio("./sounds/bgm.mp3").play().addEventListener("ended", function () {
+                    //new Audio('./sounds/bgm.mp3').play().addEventListener('ended', function () {
+                    new Audio('./sounds/bgm.mp3').play().addEventListener('ended', function () {
                         Audio.play();
                     });
 
                 } else {
-
                     controls.enabled = false;
 
                     blocker.style.display = '';
                     instructions.style.display = '';
-
                 }
 
             }
@@ -426,7 +426,8 @@
 
                     var tempIndex = upgradeIndex.pop();
 
-                    //console.log(balls[tempIndex]);
+                    //console.log(balls[tempIndex].mass); 
+                    console.log(balls[tempIndex].velocity);
 
                     var radius = balls[tempIndex].shapes[0].radius;
                     var newIndex = planetSizes.indexOf(radius) + 1;
@@ -439,7 +440,7 @@
                     //balls[tempIndex].mass = newIndex + 1;
                     balls[tempIndex].mass = radius;
 
-                    balls[tempIndex].velocity.set(0, 0, 0);
+                    //balls[tempIndex].velocity.set(0, 0, 0);
 
                     ballMeshes[tempIndex].material = materials[newIndex];
                     ballMeshes[tempIndex].geometry = new THREE.SphereGeometry(radius, 32, 32);
@@ -562,7 +563,7 @@
                             for (var i = 0; i < balls.length; i++) {
                                 if (balls[i].id == e.target.id) {
                                     addCollidePairs(e.target.id, e.body.id, i);
-                                    new Audio("./sounds/damage7.mp3").play()
+                                    new Audio("./sounds/damage7.mp3").play();
                                 }
                             }
                         }
