@@ -451,7 +451,7 @@
 
                     var tempIndex = upgradeIndex.pop();
 
-                    console.log(balls[tempIndex]);
+                    //console.log(balls[tempIndex]);
 
                     var radius = balls[tempIndex].shapes[0].radius;
                     var newIndex = planetSizes.indexOf(radius) + 1;
@@ -478,7 +478,7 @@
                     //balls[tempIndex].velocity.set(0, 0, 0);
                     ballMeshes[tempIndex].position.y = balls[tempIndex].position.y;
 
-                    console.log(balls[tempIndex]);
+                    //console.log(balls[tempIndex]);
                 }
 
                 while (removeIndex.length > 0) {
@@ -490,7 +490,7 @@
                     balls.splice(tempIndex, 1);
                     ballMeshes.splice(tempIndex, 1);
 
-                    console.log("remove " + tempIndex);
+                    //console.log("remove " + tempIndex);
                 }
 
 
