@@ -113,7 +113,7 @@
         var materials = new Array();
         var texLoader = new THREE.TextureLoader();
 
-        var unit = 4.2;
+        var unit = 5;
 
         var surface = ["textures/pluto.jpg",
             "textures/moon.jpg",
@@ -129,7 +129,7 @@
 
         for (var i = 0; i < surface.length; i++) {
             texture = texLoader.load(surface[i]);
-            materials[i] = new THREE.MeshBasicMaterial({
+            materials[i] = new THREE.MeshLambertMaterial({
                 map: texture,
             });
         }
@@ -172,7 +172,7 @@
 
                     blocker.style.display = 'none';
 
-                    new Audio("./sounds/bgm.mp3").play().addEventListener("ended",function(){
+                    new Audio("./sounds/bgm.mp3").play().addEventListener("ended", function () {
                         Audio.play();
                     });
 
@@ -236,9 +236,7 @@
             }, false);
 
         } else {
-
             instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
-
         }
 
         initCannon();
@@ -248,7 +246,7 @@
         function setBoundary(x, y, z) {
             // Add boxes
             var boxSize = 20;
-            var halfExtents = new CANNON.Vec3(boxSize, 1.5*boxSize, boxSize);
+            var halfExtents = new CANNON.Vec3(boxSize, 1.5 * boxSize, boxSize);
             var boxShape = new CANNON.Box(halfExtents);
             var boxGeometry = new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2);
 
@@ -264,8 +262,8 @@
             var boxMesh = new THREE.Mesh(boxGeometry, material);
             world.add(boxBody);
             scene.add(boxMesh);
-            boxBody.position.set(x, 1.5*y, z);
-            boxMesh.position.set(x, 1.5*y, z);
+            boxBody.position.set(x, 1.5 * y, z);
+            boxMesh.position.set(x, 1.5 * y, z);
             boxMesh.castShadow = true;
             boxMesh.receiveShadow = true;
             boxes.push(boxBody);
@@ -335,21 +333,17 @@
             light = new THREE.SpotLight(0xffffff);
             light.position.set(0, 80, 0);
             light.target.position.set(0, 0, 0);
-            if (true) {
-                light.castShadow = true;
-
-                light.shadowCameraNear = 20;
-                light.shadowCameraFar = 50;//camera.far;
-                light.shadowCameraFov = 40;
-
-                light.shadowMapBias = 0.1;
-                light.shadowMapDarkness = 0.7;
-                light.shadowMapWidth = 2 * 512;
-                light.shadowMapHeight = 2 * 512;
-
-                light.shadowCameraVisible = true;
-            }
+            light.castShadow = true;
+            light.shadowCameraNear = 20;
+            light.shadowCameraFar = 50;//camera.far;
+            light.shadowCameraFov = 40;
+            light.shadowMapBias = 0.1;
+            light.shadowMapDarkness = 1;
+            light.shadowMapWidth = 2 * 512;
+            light.shadowMapHeight = 2 * 512;
+            light.shadowCameraVisible = true;
             scene.add(light);
+
             controls = new PointerLockControls(camera, sphereBody);
             scene.add(controls.getObject());
 
@@ -377,8 +371,7 @@
 
 
             var texLoader = new THREE.TextureLoader();
-            //var texture = texLoader.load("textures/8k_milkyWay.jpg");
-            var texture = texLoader.load("textures/star.jpg");
+            var texture = texLoader.load("textures/space.jpg");
 
             material = new THREE.MeshLambertMaterial({
                 map: texture,
