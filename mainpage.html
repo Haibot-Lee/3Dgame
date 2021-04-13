@@ -261,6 +261,33 @@
         init();
         animate();
 
+        function setBoundary(x, y, z) {
+            // Add boxes
+            var boxSize = 20;
+            var halfExtents = new CANNON.Vec3(boxSize, boxSize, boxSize);
+            var boxShape = new CANNON.Box(halfExtents);
+            var boxGeometry = new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2);
+
+            var texLoader = new THREE.TextureLoader();
+            var texture = texLoader.load("textures/star.jpg");
+            material = new THREE.MeshBasicMaterial({
+                map: texture,
+            });
+
+            var boxBody = new CANNON.Body({ mass: 10000 });
+
+            boxBody.addShape(boxShape);
+            var boxMesh = new THREE.Mesh(boxGeometry, material);
+            world.add(boxBody);
+            scene.add(boxMesh);
+            boxBody.position.set(x, y, z);
+            boxMesh.position.set(x, y, z);
+            boxMesh.castShadow = true;
+            boxMesh.receiveShadow = true;
+            boxes.push(boxBody);
+            boxMeshes.push(boxMesh);
+        }
+
         function initCannon() {
             // Setup our world
             world = new CANNON.World();
@@ -377,160 +404,26 @@
 
             window.addEventListener('resize', onWindowResize, false);
 
+            /*
             // Add boxes
             var boxSize = 20;
             var halfExtents = new CANNON.Vec3(boxSize, boxSize, boxSize);
             var boxShape = new CANNON.Box(halfExtents);
             var boxGeometry = new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2);
-
-
-            // TODO: use boxes to make a boundary
+*/
 
             var distance = 40;
             var height = 20;
-            //for (var i = 0; i < 3; i++) {
-            var x = distance;
-            var y = height;
-            var z = 0;
 
-            var boxBody = new CANNON.Body({ mass: 10000 });
-
-            //var texLoader = new THREE.TextureLoader();
-            //var texture = texLoader.load("textures/sun.jpg");
-            material = new THREE.MeshBasicMaterial({
-                map: texture,
-            });
-
-            // for testing
-            //var material = new THREE.MeshLambertMaterial({ color: 0x39C5BB });
-
-
-            boxBody.addShape(boxShape);
-            var boxMesh = new THREE.Mesh(boxGeometry, material);
-            world.add(boxBody);
-            scene.add(boxMesh);
-            boxBody.position.set(x, y, z);
-            boxMesh.position.set(x, y, z);
-            boxMesh.castShadow = true;
-            boxMesh.receiveShadow = true;
-            boxes.push(boxBody);
-            boxMeshes.push(boxMesh);
-
-
-            var x = 0;
-            var y = height;
-            var z = distance;
-
-            var boxBody = new CANNON.Body({ mass: 10000 });
-            boxBody.addShape(boxShape);
-            var boxMesh = new THREE.Mesh(boxGeometry, material);
-            world.add(boxBody);
-            scene.add(boxMesh);
-            boxBody.position.set(x, y, z);
-            boxMesh.position.set(x, y, z);
-            boxMesh.castShadow = true;
-            boxMesh.receiveShadow = true;
-            boxes.push(boxBody);
-            boxMeshes.push(boxMesh);
-
-
-            var x = distance;
-            var y = height;
-            var z = distance;
-
-            var boxBody = new CANNON.Body({ mass: 10000 });
-            boxBody.addShape(boxShape);
-            var boxMesh = new THREE.Mesh(boxGeometry, material);
-            world.add(boxBody);
-            scene.add(boxMesh);
-            boxBody.position.set(x, y, z);
-            boxMesh.position.set(x, y, z);
-            boxMesh.castShadow = true;
-            boxMesh.receiveShadow = true;
-            boxes.push(boxBody);
-            boxMeshes.push(boxMesh);
-
-
-            var x = -distance;
-            var y = height;
-            var z = 0;
-
-            var boxBody = new CANNON.Body({ mass: 10000 });
-            boxBody.addShape(boxShape);
-            var boxMesh = new THREE.Mesh(boxGeometry, material);
-            world.add(boxBody);
-            scene.add(boxMesh);
-            boxBody.position.set(x, y, z);
-            boxMesh.position.set(x, y, z);
-            boxMesh.castShadow = true;
-            boxMesh.receiveShadow = true;
-            boxes.push(boxBody);
-            boxMeshes.push(boxMesh);
-
-
-            var x = distance;
-            var y = height;
-            var z = -distance;
-
-            var boxBody = new CANNON.Body({ mass: 10000 });
-            boxBody.addShape(boxShape);
-            var boxMesh = new THREE.Mesh(boxGeometry, material);
-            world.add(boxBody);
-            scene.add(boxMesh);
-            boxBody.position.set(x, y, z);
-            boxMesh.position.set(x, y, z);
-            boxMesh.castShadow = true;
-            boxMesh.receiveShadow = true;
-            boxes.push(boxBody);
-            boxMeshes.push(boxMesh);
-
-            var x = -distance;
-            var y = height;
-            var z = distance;
-
-            var boxBody = new CANNON.Body({ mass: 10000 });
-            boxBody.addShape(boxShape);
-            var boxMesh = new THREE.Mesh(boxGeometry, material);
-            world.add(boxBody);
-            scene.add(boxMesh);
-            boxBody.position.set(x, y, z);
-            boxMesh.position.set(x, y, z);
-            boxMesh.castShadow = true;
-            boxMesh.receiveShadow = true;
-            boxes.push(boxBody);
-            boxMeshes.push(boxMesh);
-
-            var x = -distance;
-            var y = height;
-            var z = -distance;
-
-            var boxBody = new CANNON.Body({ mass: 10000 });
-            boxBody.addShape(boxShape);
-            var boxMesh = new THREE.Mesh(boxGeometry, material);
-            world.add(boxBody);
-            scene.add(boxMesh);
-            boxBody.position.set(x, y, z);
-            boxMesh.position.set(x, y, z);
-            boxMesh.castShadow = true;
-            boxMesh.receiveShadow = true;
-            boxes.push(boxBody);
-            boxMeshes.push(boxMesh);
-
-            var x = 0;
-            var y = height;
-            var z = -distance;
-
-            var boxBody = new CANNON.Body({ mass: 10000 });
-            boxBody.addShape(boxShape);
-            var boxMesh = new THREE.Mesh(boxGeometry, material);
-            world.add(boxBody);
-            scene.add(boxMesh);
-            boxBody.position.set(x, y, z);
-            boxMesh.position.set(x, y, z);
-            boxMesh.castShadow = true;
-            boxMesh.receiveShadow = true;
-            boxes.push(boxBody);
-            boxMeshes.push(boxMesh);
+            
+            setBoundary(distance, height, 0);
+            setBoundary(0, height, distance);
+            setBoundary(0, height, -distance);
+            setBoundary(distance, height, distance);
+            setBoundary(-distance, height, 0);
+            setBoundary(distance, height, -distance);
+            setBoundary(-distance, height, distance);
+            setBoundary(-distance, height, -distance);
         }
 
         function onWindowResize() {
@@ -544,35 +437,12 @@
         var removeIndex = [];
         var collidePairs = [];
 
-        //var addBody = [];
-        //var addMesh = [];
-
         var upgradeIndex = [];
 
         function animate() {
             requestAnimationFrame(animate);
             if (controls.enabled) {
                 while (upgradeIndex.length > 0) {
-                    /*
-                    var found = false;
-                    collidePairs.forEach(pair => {
-                        pair.forEach(element => {
-                            if (colliderID == element) {
-                                found = true;
-                            }
-                        });
-                    });
-                    if (!found) {
-                        collidePairs.push([colliderID, collideeID]);
-                        removeIndex.push(colliderIndex);
-
-                        for (var i = 0; i < balls.length; i++) {
-                            if (balls[i].id == collideeID) {
-                                upgradeIndex.push(i);
-                            }
-                        }
-                    }*/
-
                     collidePairs.pop();
 
                     var tempIndex = upgradeIndex.pop();
