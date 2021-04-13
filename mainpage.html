@@ -358,12 +358,12 @@
 
                 var text = new THREE.Mesh(geom, materials[10]);
                 scene.add(text);
-                text.position.set(-10, 60, -20);
+                text.position.set(-10, 70, -20);
             });
 
             nextPlanet = new THREE.Mesh(new THREE.SphereGeometry(planetSizes[cnt % planetSizes.length], 32, 32), materials[cnt % planetSizes.length]);
             scene.add(nextPlanet);
-            nextPlanet.position.set(0, 50, -20);
+            nextPlanet.position.set(0, 65, -20);
 
             // floor
             geometry = new THREE.PlaneGeometry(300, 300, 50, 50);
@@ -493,6 +493,7 @@
         var shootDirection = new THREE.Vector3();
         var shootVelo = 15;
         var projector = new THREE.Projector();
+
         function getShootDir(targetVec) {
             var vector = targetVec;
             targetVec.set(0, 0, 1);
@@ -575,7 +576,7 @@
             scene.remove(nextPlanet);
             nextPlanet = new THREE.Mesh(new THREE.SphereGeometry(planetSizes[cnt % planetSizes.length], 32, 32), materials[cnt % planetSizes.length]);
             scene.add(nextPlanet);
-            nextPlanet.position.set(0, 50, -20);
+            nextPlanet.position.set(0, 65, -20);
             planetImg.src = surface[cnt % planetSizes.length];
         });
 
