@@ -151,13 +151,13 @@
         materials[6] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[6] = 3.87 * unit / 2;
+        planetSizes[6] = 3.87 * unit/2;
         //8: Uranus
         texture = texLoader.load("textures/uranus.jpeg");
         materials[7] = new THREE.MeshBasicMaterial({
             map: texture,
         });
-        planetSizes[7] = 3.98 * unit / 2;
+        planetSizes[7] = 3.98 * unit/2;
         //7: Saturn
         texture = texLoader.load("textures/saturn.jpeg");
         materials[8] = new THREE.MeshBasicMaterial({
@@ -264,7 +264,7 @@
         function setBoundary(x, y, z) {
             // Add boxes
             var boxSize = 20;
-            var halfExtents = new CANNON.Vec3(boxSize, boxSize, boxSize);
+            var halfExtents = new CANNON.Vec3(boxSize, 1.5*boxSize, boxSize);
             var boxShape = new CANNON.Box(halfExtents);
             var boxGeometry = new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2);
 
@@ -280,8 +280,8 @@
             var boxMesh = new THREE.Mesh(boxGeometry, material);
             world.add(boxBody);
             scene.add(boxMesh);
-            boxBody.position.set(x, y, z);
-            boxMesh.position.set(x, y, z);
+            boxBody.position.set(x, 1.5*y, z);
+            boxMesh.position.set(x, 1.5*y, z);
             boxMesh.castShadow = true;
             boxMesh.receiveShadow = true;
             boxes.push(boxBody);
@@ -326,7 +326,7 @@
             sphereShape = new CANNON.Sphere(radius);
             sphereBody = new CANNON.Body({ mass: mass });
             sphereBody.addShape(sphereShape);
-            sphereBody.position.set(0, 60, 0);
+            sphereBody.position.set(0, 60 + 10, 0);
             sphereBody.linearDamping = 0.9;
             world.add(sphereBody);
 
@@ -593,8 +593,8 @@
                     }
                 });
             }
-            //cnt++;
-            cnt = Math.floor(Math.random() * 6);
+            cnt++;
+            //cnt = Math.floor(Math.random() * 6);
             //cnt = 5;
 
             scene.remove(nextPlanet);
