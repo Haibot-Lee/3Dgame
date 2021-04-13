@@ -107,6 +107,8 @@
         var blocker = document.getElementById('blocker');
         var instructions = document.getElementById('instructions');
 
+        var upperBound;
+
         var cnt = 10;
         var nextPlanet;
         var planetSizes = new Array();
@@ -333,31 +335,39 @@
             // floor
             geometry = new THREE.PlaneGeometry(100, 100);
             geometry.applyMatrix(new THREE.Matrix4().makeRotationX(- Math.PI / 2));
-
             var texture = texLoader.load("textures/star.jpg");
-
             material = new THREE.MeshLambertMaterial({
                 map: texture,
             });
-
             mesh = new THREE.Mesh(geometry, material);
             mesh.castShadow = true;
             mesh.receiveShadow = true;
             scene.add(mesh);
+
+            // upperBound
+            geometry = new THREE.PlaneGeometry(50, 50);
+            geometry.applyMatrix(new THREE.Matrix4().makeRotationX(- Math.PI / 2));
+            var texture = texLoader.load("textures/space.jpg");
+            material = new THREE.MeshLambertMaterial({
+                map: texture,
+                transparent: true,
+                opacity: 0.4,
+
+            });
+            upperBound = new THREE.Mesh(geometry, material);
+            scene.add(upperBound);
+            upperBound.position.set(0, 55, 0);
 
             renderer = new THREE.WebGLRenderer();
             renderer.shadowMapEnabled = true;
             renderer.shadowMapSoft = true;
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setClearColor(scene.fog.color, 1);
-
             document.body.appendChild(renderer.domElement);
-
             window.addEventListener('resize', onWindowResize, false);
 
             var distance = 40;
             var height = 20;
-
             setBoundary(distance, height, 0);
             setBoundary(0, height, distance);
             setBoundary(0, height, -distance);
@@ -557,10 +567,13 @@
                             }
                         }
                     }
+                    if (ballBody.position.y + ballBody.shapes[0].radius > 55) {
+                        var timeoutID = setTimeout(myAlert, 5000);
+                    }
                 });
             }
-            // cnt = Math.floor(Math.random() * 5);
-            cnt++;
+            cnt = Math.floor(Math.random() * 5);
+            // cnt++;
 
             scene.remove(nextPlanet);
             nextPlanet = new THREE.Mesh(new THREE.SphereGeometry(planetSizes[cnt % planetSizes.length], 32, 32), materials[cnt % planetSizes.length]);
@@ -569,6 +582,10 @@
             planetImg.src = "textures/" + surface[cnt % planetSizes.length] + ".jpeg"
             planetName.innerHTML = surface[cnt % planetSizes.length];
         });
+
+        function myAlert() {
+            console.log("failed!");
+        }
 
 
     </script><canvas width="1848" height="1428" style="width: 924px; height: 714px;"></canvas>
