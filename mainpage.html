@@ -123,7 +123,7 @@
             materials[i] = new THREE.MeshLambertMaterial({
                 map: texture,
             });
-            
+
         }
 
         //Pluto
@@ -142,11 +142,11 @@
         planetSizes[6] = 3.87 * unit / 3;
         //Uranus
         planetSizes[7] = 3.98 * unit / 3;
-        //7: Saturn
+        //Saturn
         planetSizes[8] = 9.14 * unit / 5;
-        //6: Jupiter
+        //Jupiter
         planetSizes[9] = 10.97 * unit / 5;
-        //0: Sun
+        //Sun
         planetSizes[10] = 190.25 * unit / 80;
 
 
@@ -269,7 +269,7 @@
 
             // Create a sphere
             // change mass to hover the camera
-            var mass = 0, radius = 1;
+            var mass = 0, radius = 0;
             sphereShape = new CANNON.Sphere(radius);
             sphereBody = new CANNON.Body({ mass: mass });
             sphereBody.addShape(sphereShape);
@@ -287,16 +287,16 @@
 
         function init() {
 
-            camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
-
             scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
             scene.fog = new THREE.Fog(0x000000, 0, 500);
 
             var ambient = new THREE.AmbientLight(0x111111);
             scene.add(ambient);
 
             light = new THREE.SpotLight(0xffffff, 1.5, 500);
-            light.position.set(0, 90, 0);
+            light.position.set(0, 100, 0);
             light.target.position.set(0, -1000000, 0);
             light.castShadow = true;
             light.shadowCameraNear = 20;
@@ -321,7 +321,7 @@
                     height: 0.5,
                 });
                 var tempTexture = texLoader.load("textures/" + surface[10] + ".jpeg");
-                var textMaterial = new THREE.MeshBasicMaterial({
+                var textMaterial = new THREE.MeshPhongMaterial({
                     map: tempTexture,
                 });
                 var text = new THREE.Mesh(geom, textMaterial);
@@ -573,14 +573,14 @@
                         if (ballBody.position.z <= 40 && ballBody.position.z >= -40) {
                             if (ballBody.position.y + ballBody.shapes[0].radius > 55) {
                                 var timeoutID = setTimeout(myAlert, 10000);
-                            } 
+                            }
                         }
                     }
                 });
             }
-            //cnt = Math.floor(Math.random() * 5);
-            //cnt++;
-            cnt = 10;
+            cnt = Math.floor(Math.random() * 5);
+            // cnt++;
+            // cnt = 10;
 
             scene.remove(nextPlanet);
             nextPlanet = new THREE.Mesh(new THREE.SphereGeometry(planetSizes[cnt % planetSizes.length], 32, 32), materials[cnt % planetSizes.length]);
