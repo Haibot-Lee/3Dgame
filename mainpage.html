@@ -495,10 +495,10 @@
                 }
 
                 if (overRange) {
-                    timeoutID.push(setTimeout(myAlert, 10000));
+                    timeoutID.push(setTimeout(failed, 10000));
                     timerCnt++;
                     //console.log("set timeout " + timerCnt + " : " + timeoutID[timerCnt - 1]);
-                }else {
+                } else {
                     if (timeoutID.length > 0) {
                         var recentTimer = timeoutID.pop();
                         timerCnt--;
@@ -513,8 +513,6 @@
                     boxMeshes[i].quaternion.copy(boxes[i].quaternion);
                 }
 
-            
-
                 // rotate next planet
                 nextPlanet.rotation.y += 0.02;
             }
@@ -522,7 +520,7 @@
             renderer.render(scene, camera);
             time = Date.now();
 
-            
+
         }
 
         var shootDirection = new THREE.Vector3();
@@ -606,9 +604,9 @@
                     }
                 });
             }
-            cnt = Math.floor(Math.random() * 5);
+            // cnt = Math.floor(Math.random() * 5);
             // cnt++;
-            // cnt = 10;
+            cnt = 10;
 
             scene.remove(nextPlanet);
             nextPlanet = new THREE.Mesh(new THREE.SphereGeometry(planetSizes[cnt % planetSizes.length], 32, 32), materials[cnt % planetSizes.length]);
@@ -618,14 +616,21 @@
             planetName.innerHTML = surface[cnt % planetSizes.length];
         });
 
-        function myAlert() {
+        function failed() {
             console.log("failed!");
             controls.enabled = false;
 
             blocker.style.display = '';
             gameOver = true;
-            instructions.innerHTML = '<span style="font-size:80px; color:#ff0000">YOU DIED</span>';
+            instructions.innerHTML = '<span style="font-size:80px; color:#ff0000">YOU DIED!</span><br>(Press any key to restart)';
             instructions.style.display = '';
+
+            document.addEventListener("keypress", event => {
+                location.reload();
+            });
+            document.addEventListener("click", event => {
+                location.reload();
+            });
         }
 
 
