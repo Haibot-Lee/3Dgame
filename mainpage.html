@@ -120,7 +120,7 @@
 
         for (var i = 0; i < surface.length; i++) {
             texture = texLoader.load("textures/" + surface[i] + ".jpeg");
-            materials[i] = new THREE.MeshLambertMaterial({
+            materials[i] = new THREE.MeshBasicMaterial({
                 map: texture,
             });
 
@@ -196,41 +196,42 @@
             document.addEventListener('pointerlockerror', pointerlockerror, false);
             document.addEventListener('mozpointerlockerror', pointerlockerror, false);
             document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
+            if (!gameOver) {
+                instructions.addEventListener('click', function (event) {
+                    instructions.style.display = 'none';
 
-            instructions.addEventListener('click', function (event) {
-                instructions.style.display = 'none';
+                    // Ask the browser to lock the pointer
+                    element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
 
-                // Ask the browser to lock the pointer
-                element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+                    if (/Firefox/i.test(navigator.userAgent)) {
 
-                if (/Firefox/i.test(navigator.userAgent)) {
+                        var fullscreenchange = function (event) {
 
-                    var fullscreenchange = function (event) {
+                            if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
 
-                        if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
+                                document.removeEventListener('fullscreenchange', fullscreenchange);
+                                document.removeEventListener('mozfullscreenchange', fullscreenchange);
 
-                            document.removeEventListener('fullscreenchange', fullscreenchange);
-                            document.removeEventListener('mozfullscreenchange', fullscreenchange);
+                                element.requestPointerLock();
+                            }
 
-                            element.requestPointerLock();
                         }
+
+                        document.addEventListener('fullscreenchange', fullscreenchange, false);
+                        document.addEventListener('mozfullscreenchange', fullscreenchange, false);
+
+                        element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+
+                        element.requestFullscreen();
+
+                    } else {
+
+                        element.requestPointerLock();
 
                     }
 
-                    document.addEventListener('fullscreenchange', fullscreenchange, false);
-                    document.addEventListener('mozfullscreenchange', fullscreenchange, false);
-
-                    element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
-
-                    element.requestFullscreen();
-
-                } else {
-
-                    element.requestPointerLock();
-
-                }
-
-            }, false);
+                }, false);
+            }
 
         } else {
             instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
@@ -425,7 +426,11 @@
         var upgradeIndex = [];
 
         var timeoutID = [];
-        var timerCnt = 0;
+        var warnID = [];
+
+        var warning = new Audio("./sounds/warning.mp3");
+        warning.loop = true;
+        var temp;
 
         function animate() {
             requestAnimationFrame(animate);
@@ -487,7 +492,7 @@
 
                     if (balls[i].position.x <= 20 && balls[i].position.x >= -20) {
                         if (balls[i].position.z <= 20 && balls[i].position.z >= -20) {
-                            if (55 - balls[i].position.y < balls[i].shapes[0].radius && balls[i].position.y - 55 < balls[i].shapes[0].radius) {
+                            if (Math.abs(55 - balls[i].position.y) < balls[i].shapes[0].radius) {
                                 overRange = true;
                             }
                         }
@@ -496,15 +501,24 @@
 
                 if (overRange) {
                     timeoutID.push(setTimeout(failed, 10000));
-                    timerCnt++;
-                    //console.log("set timeout " + timerCnt + " : " + timeoutID[timerCnt - 1]);
+                    warnID.push(setTimeout(function () {
+                        if (!gameOver) {
+                            warning.play();
+                            console.log("danger");
+                        }
+                    }, 5000));
                 } else {
                     if (timeoutID.length > 0) {
                         var recentTimer = timeoutID.pop();
-                        timerCnt--;
                         clearTimeout(recentTimer);
+                        var recentWarning = warnID.pop();
+                        clearTimeout(recentWarning);
                         //console.log("Cancel" + recentTimer);
                     }
+                }
+
+                if (timeoutID.length == 0) {
+                    warning.pause();
                 }
 
                 // Update box positions
@@ -605,8 +619,8 @@
                 });
             }
             // cnt = Math.floor(Math.random() * 5);
-            // cnt++;
-            cnt = 10;
+            cnt++;
+            // cnt = 10;
 
             scene.remove(nextPlanet);
             nextPlanet = new THREE.Mesh(new THREE.SphereGeometry(planetSizes[cnt % planetSizes.length], 32, 32), materials[cnt % planetSizes.length]);
@@ -619,11 +633,11 @@
         function failed() {
             console.log("failed!");
             controls.enabled = false;
-
             blocker.style.display = '';
             gameOver = true;
             instructions.innerHTML = '<span style="font-size:80px; color:#ff0000">YOU DIED!</span><br>(Press any key to restart)';
             instructions.style.display = '';
+            warning.pause();
 
             document.addEventListener("keypress", event => {
                 location.reload();
