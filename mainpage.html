@@ -72,6 +72,7 @@
     <script src="js/three_inClass.js"></script>
     <script src="js/cannon.js"></script>
     <script src="js/PointerLockControls.js"></script>
+    <script src="js/loaders/GLTFLoader.js"></script>
 
     <div id='display'>
         <span style="font-size:30px">Score: </span>
@@ -382,6 +383,29 @@
             setBoundary(distance, height, -distance);
             setBoundary(-distance, height, distance);
             setBoundary(-distance, height, -distance);
+
+            var loader = new THREE.GLTFLoader();
+
+            var figure;
+
+            // gltf: refer to the model itself
+            loader.load('models/bastet_magi/scene.gltf', function (gltf) {
+                // gltf.scene is the model
+                figure = gltf.scene;
+                scene.add(gltf.scene);
+                //console.log(gltf);      // comment it out later
+                gltf.scene.position.set(0, 60, 25);
+                figure.scale.set(0.15, 0.15, 0.15);
+
+                figure.rotateY(Math.PI);//rotation around x axis with π/4
+                
+
+            }, undefined, function (error) {
+
+                console.error(error);
+
+            });
+
         }
 
         function setBoundary(x, y, z) {
