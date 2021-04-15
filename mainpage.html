@@ -152,6 +152,9 @@
 
         var gameOver = false;
 
+        var shaderLoader;
+        var figure;
+
 
         var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
@@ -409,31 +412,65 @@
             });
             */
 
+            shaderLoader = new THREE.FileLoader();
 
-            loadModel();
+            loadModel(light);
         }
 
-        async function loadModel() {
+        
+
+        async function loadModel(light) {
             var loader = new THREE.GLTFLoader();
 
-            //var vShader = await shaderLoader.load('');
-            //var fShader = await shaderLoader.load('');
-
-            var loader = new THREE.GLTFLoader();
-
-
-            var figure;
+            var vShader = await shaderLoader.load('vertex.glsl');
+            var fShader = await shaderLoader.load('fragment.glsl');
 
             // gltf: refer to the model itself
             loader.load('models/bastet_magi/scene.gltf', function (gltf) {
                 // gltf.scene is the model
                 figure = gltf.scene;
-                scene.add(gltf.scene);
+                
+                figure.traverse(function (child) {
+                    if (child instanceof THREE.Mesh) {
+
+                        // assign the material
+                        child.material = new THREE.ShaderMaterial({
+                            // pass info. from Three.js to the shader 
+                            uniforms: {
+                                lightSrc: { type: "v3", value: light.position },
+                                texture: { type: "t", value: child.material.map }
+                            },
+                            vertexShader: vShader.responseText,
+                            fragmentShader: fShader.responseText
+                        });
+
+                        child.castShadow = true;
+
+                    }
+                });
+
+
+
+                /*
+                figure.material = new THREE.ShaderMaterial({
+                    // pass info. from Three.js to the shader 
+                    uniforms: {
+                        lightSrc: { type: "v3", value: light.position },
+                        texture: { type: "t", value: figure.material.map }
+                    },
+                    vertexShader: vShader.responseText,
+                    fragmentShader: fShader.responseText
+                });*/
+
+                figure.castShadow = true;
+
                 //console.log(gltf);      // comment it out later
-                gltf.scene.position.set(0, 60, 25);
+                figure.position.set(0, 60, 25);
                 figure.scale.set(0.15, 0.15, 0.15);
 
                 figure.rotateY(Math.PI);//rotation around y axis with π/4
+
+                scene.add(figure);
 
             }, undefined, function (error) {
 
@@ -674,8 +711,8 @@
                     }
                 });
 
-                // cnt = Math.floor(Math.random() * 5);
-                cnt++;
+                cnt = Math.floor(Math.random() * 5);
+                //cnt++;
                 // cnt = 10;
             }
 
