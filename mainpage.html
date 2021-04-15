@@ -388,30 +388,6 @@
             setBoundary(-distance, height, distance);
             setBoundary(-distance, height, -distance);
 
-            /*
-            var loader = new THREE.GLTFLoader();
-
-            var figure;
-
-            // gltf: refer to the model itself
-            loader.load('models/bastet_magi/scene.gltf', function (gltf) {
-                // gltf.scene is the model
-                figure = gltf.scene;
-                scene.add(gltf.scene);
-                //console.log(gltf);      // comment it out later
-                gltf.scene.position.set(0, 60, 25);
-                figure.scale.set(0.15, 0.15, 0.15);
-
-                figure.rotateY(Math.PI);//rotation around y axis with π/4
-                
-
-            }, undefined, function (error) {
-
-                console.error(error);
-
-            });
-            */
-
             shaderLoader = new THREE.FileLoader();
 
             loadModel(light);
@@ -426,7 +402,7 @@
             var fShader = await shaderLoader.load('fragment.glsl');
 
             // gltf: refer to the model itself
-            loader.load('models/bastet_magi/scene.gltf', function (gltf) {
+            loader.load('models/zelda/scene.gltf', function (gltf) {
                 // gltf.scene is the model
                 figure = gltf.scene;
                 
@@ -468,7 +444,7 @@
                 figure.castShadow = true;
 
                 //console.log(gltf);      // comment it out later
-                figure.position.set(0, 60, 25);
+                figure.position.set(0, 61, 30);
                 figure.scale.set(0.15, 0.15, 0.15);
 
                 figure.rotateY(Math.PI);//rotation around y axis with π/4
@@ -714,8 +690,8 @@
                     }
                 });
 
-                cnt = Math.floor(Math.random() * 5);
-                //cnt++;
+                //cnt = Math.floor(Math.random() * 5);
+                cnt++;
                 // cnt = 10;
             }
 

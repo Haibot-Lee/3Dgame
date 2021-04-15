@@ -43,7 +43,7 @@ void main()
 	}else if (brightness < 2.2) {
 		brightness = 2.0 * brightness * scaleNum;
 	}else {
-		brightness = 3.0 * brightness * scaleNum;
+		//brightness = 3.0 * brightness * scaleNum;
 	}
    	 
 
