@@ -410,8 +410,8 @@
 
 
                 figure.traverse(function (child) {
-                    console.log(gltf.scene);
-                    console.log(child);
+                    //console.log(gltf.scene);
+                    //console.log(child);
                     if (child instanceof THREE.Mesh) {
 
                         // assign the material
@@ -493,7 +493,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
-        var dt = 1 / 60;
+        var dt = 1 / 40;
 
         var removeIndex = [];
         var collidePairs = [];
@@ -516,7 +516,7 @@
                     var tempIndex = upgradeIndex.pop();
 
                     //console.log(balls[tempIndex].mass); 
-                    console.log(balls[tempIndex].velocity);
+                    //console.log(balls[tempIndex].velocity);
 
                     var radius = balls[tempIndex].shapes[0].radius;
                     var newIndex = planetSizes.indexOf(radius) + 1;
@@ -540,7 +540,7 @@
                     score += newIndex;
                     scorePlace.innerHTML = score;
 
-                    console.log(balls[tempIndex]);
+                    //console.log(balls[tempIndex]);
                 }
 
                 while (removeIndex.length > 0) {
@@ -575,21 +575,24 @@
                 }
 
                 if (overRange) {
-                    timeoutID.push(setTimeout(failed, 10000));
+                    var recentTimer = timeoutID.push(setTimeout(failed, 10000));
                     warnID.push(setTimeout(function () {
                         if (!gameOver) {
                             warning.play();
                             console.log("danger");
                         }
                     }, 5000));
+
+                    console.log("Set" + recentTimer);
                 } else {
                     if (timeoutID.length > 0) {
                         var recentTimer = timeoutID.pop();
                         clearTimeout(recentTimer);
                         var recentWarning = warnID.pop();
                         clearTimeout(recentWarning);
-                        //console.log("Cancel" + recentTimer);
+                        console.log("Cancel" + timeoutID.length);
                     }
+                    warning.pause();
                 }
 
                 if (timeoutID.length == 0) {
@@ -692,8 +695,8 @@
                     }
                 });
 
-                //cnt = Math.floor(Math.random() * 5);
-                cnt++;
+                cnt = Math.floor(Math.random() * 5);
+                //cnt++;
                 // cnt = 10;
             }
 
