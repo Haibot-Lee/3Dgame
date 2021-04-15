@@ -117,11 +117,13 @@
         var texLoader = new THREE.TextureLoader();
         var materials = new Array();
 
+        var upperBoundY = 50;
+
         var surface = ["Pluto", "Moon", "Mercury", "Mars", "Venus", "Earth", "Neptune", "Uranus", "Saturn", "Jupiter", "Sun"];
 
         for (var i = 0; i < surface.length; i++) {
             texture = texLoader.load("textures/" + surface[i] + ".jpeg");
-            materials[i] = new THREE.MeshBasicMaterial({
+            materials[i] = new THREE.MeshLambertMaterial({
                 map: texture,
             });
 
@@ -367,7 +369,7 @@
             });
             upperBound = new THREE.Mesh(geometry, material);
             scene.add(upperBound);
-            upperBound.position.set(0, 55, 0);
+            upperBound.position.set(0, upperBoundY, 0);
 
             renderer = new THREE.WebGLRenderer();
             renderer.shadowMapEnabled = true;
@@ -393,7 +395,7 @@
             loadModel(light);
         }
 
-        
+
 
         async function loadModel(light) {
             var loader = new THREE.GLTFLoader();
@@ -405,8 +407,8 @@
             loader.load('models/zelda/scene.gltf', function (gltf) {
                 // gltf.scene is the model
                 figure = gltf.scene;
-                
-                
+
+
                 figure.traverse(function (child) {
                     console.log(gltf.scene);
                     console.log(child);
@@ -565,7 +567,7 @@
 
                     if (balls[i].position.x <= 20 && balls[i].position.x >= -20) {
                         if (balls[i].position.z <= 20 && balls[i].position.z >= -20) {
-                            if (Math.abs(55 - balls[i].position.y) < balls[i].shapes[0].radius) {
+                            if (Math.abs(upperBoundY - balls[i].position.y) < balls[i].shapes[0].radius) {
                                 overRange = true;
                             }
                         }
@@ -708,7 +710,7 @@
             controls.enabled = false;
             blocker.style.display = '';
             gameOver = true;
-            instructions.innerHTML = '<span style="font-size:80px; color:#ff0000">YOU DIED!</span><br>(Press any key to restart)';
+            instructions.innerHTML = '<span style="font-size:80px; color:#ff0000">YOU Score: ' + score + '</span><br>(Press any key to restart)';
             instructions.style.display = '';
             warning.pause();
 
