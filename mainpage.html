@@ -430,7 +430,10 @@
                 // gltf.scene is the model
                 figure = gltf.scene;
                 
+                
                 figure.traverse(function (child) {
+                    console.log(gltf.scene);
+                    console.log(child);
                     if (child instanceof THREE.Mesh) {
 
                         // assign the material
