@@ -579,18 +579,18 @@
                     warnID.push(setTimeout(function () {
                         if (!gameOver) {
                             warning.play();
-                            console.log("danger");
+                            //console.log("danger");
                         }
                     }, 5000));
 
-                    console.log("Set" + recentTimer);
+                    //console.log("Set" + recentTimer);
                 } else {
                     if (timeoutID.length > 0) {
                         var recentTimer = timeoutID.pop();
                         clearTimeout(recentTimer);
                         var recentWarning = warnID.pop();
                         clearTimeout(recentWarning);
-                        console.log("Cancel" + timeoutID.length);
+                        //console.log("Cancel" + timeoutID.length);
                     }
                     warning.pause();
                 }
@@ -709,7 +709,7 @@
         });
 
         function failed() {
-            console.log("failed!");
+            //console.log("failed!");
             controls.enabled = false;
             blocker.style.display = '';
             gameOver = true;
