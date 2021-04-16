@@ -504,6 +504,7 @@
         var warnID = [];
 
         var warning = new Audio("./sounds/warning.mp3");
+        warning.volume = 0.5;
         warning.loop = true;
         var temp;
 
@@ -688,7 +689,9 @@
                             for (var i = 0; i < balls.length; i++) {
                                 if (balls[i].id == e.target.id) {
                                     addCollidePairs(e.target.id, e.body.id, i);
-                                    new Audio("./sounds/damage7.mp3").play();
+                                    var damage = new Audio("./sounds/damage7.mp3");
+                                    damage.volume = 0.5;
+                                    damage.play();
                                 }
                             }
                         }
