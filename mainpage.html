@@ -697,7 +697,7 @@
 
                 cnt = Math.floor(Math.random() * 5);
                 //cnt++;
-                // cnt = 10;
+                cnt = 10;
             }
 
             scene.remove(nextPlanet);
@@ -713,7 +713,7 @@
             controls.enabled = false;
             blocker.style.display = '';
             gameOver = true;
-            instructions.innerHTML = '<span style="font-size:80px; color:#ff0000">YOU Score: ' + score + '</span><br>(Press any key to restart)';
+            instructions.innerHTML = '<span style="font-size:80px; color:#ff0000">YOUR SCORE: ' + score + '</span><br>(Press any key to restart)';
             instructions.style.display = '';
             warning.pause();
 
