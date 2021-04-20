@@ -80,7 +80,12 @@
         <br><br>
 
         <span style="font-size:30px">Shoot Velocity: </span>
-        <span id='shootVelo' style="font-size:30px">15</span>
+        <span id='shootVelo' style="font-size:30px">15</span><span style="font-size:30px"> lightyear/s</span>
+        <br><br>
+
+        <span style="font-size:30px">Time Remaining: </span>
+        <span id='minutesRemaining' style="font-size:30px">5</span><span style="font-size:30px"> min. </span>
+        <span id="secondsRemaining" style="font-size:30px">0</span><span style="font-size:30px"> sec.</span>
 
         <br><br>
         <span style="font-size:30px">Next planet: </span>
@@ -108,6 +113,8 @@
 
         var score = 0;
         var scorePlace = document.getElementById("score");
+        var minutesRemaining = document.getElementById("minutesRemaining");
+        var secondsRemaining = document.getElementById("secondsRemaining");
         var shootVeloPlace = document.getElementById("shootVelo");
         var planetImg = document.getElementById("planetImg");
         var planetName = document.getElementById("planetName");
@@ -516,11 +523,23 @@
         warning.loop = true;
         var temp;
 
+        var minute = 5;
+        var gameTime = minute * 60*60;
+        
+
         function animate() {
-            //console.log(shootVelo);
 
             requestAnimationFrame(animate);
             if (controls.enabled) {
+                gameTime--;
+                minutesRemaining.innerHTML=Math.floor(gameTime/3600);
+                secondsRemaining.innerHTML=Math.floor(gameTime%3600 /60);
+                //console.log(gameTime);
+
+                if(gameTime <= 0){
+                    failed();
+                }
+                
                 while (upgradeIndex.length > 0) {
                     collidePairs.pop();
 
@@ -626,8 +645,8 @@
         }
 
         var shootDirection = new THREE.Vector3();
-        
-        // TODO: use arrow keys to modify the shootVelo
+
+        // use arrow keys to modify the shootVelo
         var shootVelo;
 
         //TODO: ranking
@@ -733,13 +752,13 @@
                 if (e.keyCode == '38') {
                     if (shootVelo < 50) {
                         shootVelo++;
-                        console.log(shootVelo);
+                        //console.log(shootVelo);
                         shootVeloPlace.innerHTML = shootVelo;
                     }
-                }else if (e.keyCode == '40'){
+                } else if (e.keyCode == '40') {
                     if (shootVelo > 0) {
                         shootVelo--;
-                        console.log(shootVelo);
+                        //console.log(shootVelo);
                         shootVeloPlace.innerHTML = shootVelo;
                     }
                 }
