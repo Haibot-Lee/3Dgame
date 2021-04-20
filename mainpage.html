@@ -78,6 +78,11 @@
         <span style="font-size:30px">Score: </span>
         <span id='score' style="font-size:30px">0</span>
         <br><br>
+
+        <span style="font-size:30px">Shoot Velocity: </span>
+        <span id='shootVelo' style="font-size:30px">15</span>
+
+        <br><br>
         <span style="font-size:30px">Next planet: </span>
         <span id='planetName' style="font-size:30px"></span>
         <br>
@@ -103,6 +108,7 @@
 
         var score = 0;
         var scorePlace = document.getElementById("score");
+        var shootVeloPlace = document.getElementById("shootVelo");
         var planetImg = document.getElementById("planetImg");
         var planetName = document.getElementById("planetName");
         var blocker = document.getElementById('blocker');
@@ -298,6 +304,8 @@
         }
 
         function init() {
+
+            shootVelo = 15;
 
             scene = new THREE.Scene();
 
@@ -509,6 +517,8 @@
         var temp;
 
         function animate() {
+            //console.log(shootVelo);
+
             requestAnimationFrame(animate);
             if (controls.enabled) {
                 while (upgradeIndex.length > 0) {
@@ -616,7 +626,14 @@
         }
 
         var shootDirection = new THREE.Vector3();
-        var shootVelo = 15;
+        
+        // TODO: use arrow keys to modify the shootVelo
+        var shootVelo;
+
+        //TODO: ranking
+
+        //TODO: timer for failing
+
         var projector = new THREE.Projector();
 
         function getShootDir(targetVec) {
@@ -700,7 +717,7 @@
 
                 cnt = Math.floor(Math.random() * 5);
                 //cnt++;
-                cnt = 10;
+                //cnt = 10;
             }
 
             scene.remove(nextPlanet);
@@ -710,6 +727,25 @@
             planetImg.src = "textures/" + surface[cnt % planetSizes.length] + ".jpeg"
             planetName.innerHTML = surface[cnt % planetSizes.length];
         });
+
+        window.addEventListener("keydown", function (e) {
+            if (controls.enabled == true) {
+                if (e.keyCode == '38') {
+                    if (shootVelo < 50) {
+                        shootVelo++;
+                        console.log(shootVelo);
+                        shootVeloPlace.innerHTML = shootVelo;
+                    }
+                }else if (e.keyCode == '40'){
+                    if (shootVelo > 0) {
+                        shootVelo--;
+                        console.log(shootVelo);
+                        shootVeloPlace.innerHTML = shootVelo;
+                    }
+                }
+            }
+        });
+
 
         function failed() {
             //console.log("failed!");
