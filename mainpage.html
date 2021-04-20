@@ -64,11 +64,16 @@
             width: 100%;
             height: 100%;
         }
+
+        #display2 {
+            color: #ffffff;
+            position: fixed;
+            right: 0;
+        }
     </style>
 </head>
 
 <body data-new-gr-c-s-check-loaded="14.1001.0" data-gr-ext-installed="">
-    <!-- <script src="js/three.js"></script> -->
     <script src="js/three_inClass.js"></script>
     <script src="js/cannon.js"></script>
     <script src="js/PointerLockControls.js"></script>
@@ -79,6 +84,14 @@
         <span id='score' style="font-size:30px">0</span>
         <br><br>
 
+        <span style="font-size:30px">Next planet: </span>
+        <span id='planetName' style="font-size:30px"></span>
+        <br>
+        <img id='planetImg' src="textures/Pluto.jpeg" width="100" height="100" style="border-radius: 50px">
+
+    </div>
+
+    <div id='display2'>
         <span style="font-size:30px">Shoot Velocity: </span>
         <span id='shootVelo' style="font-size:30px">15</span><span style="font-size:30px"> lightyear/s</span>
         <br><br>
@@ -86,13 +99,6 @@
         <span style="font-size:30px">Time Remaining: </span>
         <span id='minutesRemaining' style="font-size:30px">5</span><span style="font-size:30px"> min. </span>
         <span id="secondsRemaining" style="font-size:30px">0</span><span style="font-size:30px"> sec.</span>
-
-        <br><br>
-        <span style="font-size:30px">Next planet: </span>
-        <span id='planetName' style="font-size:30px"></span>
-        <br>
-        <img id='planetImg' src="textures/Pluto.jpeg" width="100" height="100" style="border-radius: 50px">
-
     </div>
 
     <div id="blocker">
@@ -425,8 +431,6 @@
 
 
                 figure.traverse(function (child) {
-                    //console.log(gltf.scene);
-                    //console.log(child);
                     if (child instanceof THREE.Mesh) {
 
                         // assign the material
@@ -445,22 +449,7 @@
                     }
                 });
 
-
-
-                /*
-                figure.material = new THREE.ShaderMaterial({
-                    // pass info. from Three.js to the shader 
-                    uniforms: {
-                        lightSrc: { type: "v3", value: light.position },
-                        texture: { type: "t", value: figure.material.map }
-                    },
-                    vertexShader: vShader.responseText,
-                    fragmentShader: fShader.responseText
-                });*/
-
                 figure.castShadow = true;
-
-                //console.log(gltf);      // comment it out later
                 figure.position.set(0, 61, 30);
                 figure.scale.set(0.15, 0.15, 0.15);
 
@@ -524,29 +513,26 @@
         var temp;
 
         var minute = 5;
-        var gameTime = minute * 60*60;
-        
+        var gameTime = minute * 60 * 60;
+
 
         function animate() {
 
             requestAnimationFrame(animate);
             if (controls.enabled) {
                 gameTime--;
-                minutesRemaining.innerHTML=Math.floor(gameTime/3600);
-                secondsRemaining.innerHTML=Math.floor(gameTime%3600 /60);
+                minutesRemaining.innerHTML = Math.floor(gameTime / 3600);
+                secondsRemaining.innerHTML = Math.floor(gameTime % 3600 / 60);
                 //console.log(gameTime);
 
-                if(gameTime <= 0){
+                if (gameTime <= 0) {
                     failed();
                 }
-                
+
                 while (upgradeIndex.length > 0) {
                     collidePairs.pop();
 
                     var tempIndex = upgradeIndex.pop();
-
-                    //console.log(balls[tempIndex].mass); 
-                    //console.log(balls[tempIndex].velocity);
 
                     var radius = balls[tempIndex].shapes[0].radius;
                     var newIndex = planetSizes.indexOf(radius) + 1;
@@ -556,21 +542,16 @@
 
                     balls[tempIndex].shapes = [];
                     balls[tempIndex].addShape(new CANNON.Sphere(radius));
-                    //balls[tempIndex].mass = newIndex + 1;
-                    balls[tempIndex].mass = radius;
 
-                    //balls[tempIndex].velocity.set(0, 0, 0);
+                    balls[tempIndex].mass = radius;
 
                     ballMeshes[tempIndex].material = materials[newIndex];
                     ballMeshes[tempIndex].geometry = new THREE.SphereGeometry(radius, 32, 32);
-                    //balls[tempIndex].velocity.set(0, 0, 0);
                     ballMeshes[tempIndex].position.y = balls[tempIndex].position.y;
 
                     //change score
                     score += newIndex;
                     scorePlace.innerHTML = score;
-
-                    //console.log(balls[tempIndex]);
                 }
 
                 while (removeIndex.length > 0) {
@@ -582,7 +563,6 @@
                     balls.splice(tempIndex, 1);
                     ballMeshes.splice(tempIndex, 1);
 
-                    //console.log("remove " + tempIndex);
                 }
 
 
@@ -609,18 +589,15 @@
                     warnID.push(setTimeout(function () {
                         if (!gameOver) {
                             warning.play();
-                            //console.log("danger");
                         }
                     }, 5000));
 
-                    //console.log("Set" + recentTimer);
                 } else {
                     if (timeoutID.length > 0) {
                         var recentTimer = timeoutID.pop();
                         clearTimeout(recentTimer);
                         var recentWarning = warnID.pop();
                         clearTimeout(recentWarning);
-                        //console.log("Cancel" + timeoutID.length);
                     }
                     warning.pause();
                 }
@@ -648,10 +625,6 @@
 
         // use arrow keys to modify the shootVelo
         var shootVelo;
-
-        //TODO: ranking
-
-        //TODO: timer for failing
 
         var projector = new THREE.Projector();
 
@@ -692,7 +665,6 @@
                 var y = sphereBody.position.y;
                 var z = sphereBody.position.z;
 
-                //var ballBody = new CANNON.Body({ mass: cnt % length + 1 });
                 var ballBody = new CANNON.Body({ mass: planetSizes[cnt % length] });
                 var ballShape = new CANNON.Sphere(planetSizes[cnt % length]);
                 ballBody.addShape(ballShape);
@@ -736,7 +708,7 @@
 
                 cnt = Math.floor(Math.random() * 5);
                 //cnt++;
-                //cnt = 10;
+                // cnt = 10;
             }
 
             scene.remove(nextPlanet);
@@ -752,13 +724,11 @@
                 if (e.keyCode == '38') {
                     if (shootVelo < 50) {
                         shootVelo++;
-                        //console.log(shootVelo);
                         shootVeloPlace.innerHTML = shootVelo;
                     }
                 } else if (e.keyCode == '40') {
                     if (shootVelo > 0) {
                         shootVelo--;
-                        //console.log(shootVelo);
                         shootVeloPlace.innerHTML = shootVelo;
                     }
                 }
@@ -767,7 +737,6 @@
 
 
         function failed() {
-            //console.log("failed!");
             controls.enabled = false;
             blocker.style.display = '';
             gameOver = true;
