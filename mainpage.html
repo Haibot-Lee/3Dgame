@@ -177,6 +177,7 @@
         var figure;
 
 
+        var bgm = new Audio("./sounds/bgm.mp3");
         var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
         if (havePointerLock) {
@@ -191,16 +192,14 @@
 
                     blocker.style.display = 'none';
 
-                    var bgm = new Audio("./sounds/bgm.mp3");
-                    bgm.play()
-                    bgm.addEventListener("ended", function () {
-                        bgm.play();
-                    });
+                    
+                    bgm.loop=true;
+                    bgm.play();
 
                 } else {
                     if (!gameOver) {
                         controls.enabled = false;
-
+                        bgm.pause();
                         blocker.style.display = '';
                         instructions.style.display = '';
                         //console.log("ESC");
@@ -708,7 +707,7 @@
 
                 cnt = Math.floor(Math.random() * 5);
                 //cnt++;
-                cnt = 10;
+                //cnt = 10;
             }
 
             scene.remove(nextPlanet);
