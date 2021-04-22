@@ -742,6 +742,7 @@
             instructions.innerHTML = '<span style="font-size:80px; color:#ff0000">YOUR SCORE: ' + score + '</span><br>(Press any key to restart)';
             instructions.style.display = '';
             warning.pause();
+            bgm.pause();
 
             document.addEventListener("keypress", event => {
                 location.reload();
