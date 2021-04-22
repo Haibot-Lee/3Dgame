@@ -328,9 +328,9 @@
             var ambient = new THREE.AmbientLight(0x111111);
             scene.add(ambient);
 
-            light = new THREE.SpotLight(0xffffff, 1.5, 500);
+            light = new THREE.SpotLight(0xffffff, 1.5, 200);
             light.position.set(0, 100, 0);
-            light.target.position.set(0, -1000000, 0);
+            light.target.position.set(0, 0, 0);
             light.castShadow = true;
             light.shadowCameraNear = 20;
             light.shadowCameraFar = 50;
@@ -708,7 +708,7 @@
 
                 cnt = Math.floor(Math.random() * 5);
                 //cnt++;
-                // cnt = 10;
+                cnt = 10;
             }
 
             scene.remove(nextPlanet);
