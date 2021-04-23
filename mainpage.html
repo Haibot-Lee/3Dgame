@@ -421,8 +421,8 @@
         async function loadModel(light) {
             var loader = new THREE.GLTFLoader();
 
-            var vShader = await shaderLoader.load('vertex.glsl');
-            var fShader = await shaderLoader.load('fragment.glsl');
+            var vShader = await shaderLoader.load('models/vertex.glsl');
+            var fShader = await shaderLoader.load('models/fragment.glsl');
 
             // gltf: refer to the model itself
             loader.load('models/zelda/scene.gltf', function (gltf) {
