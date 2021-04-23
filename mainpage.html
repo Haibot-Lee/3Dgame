@@ -138,6 +138,7 @@
 
         var upperBoundY = 50;
 
+        //materials of planets
         var surface = ["Pluto", "Moon", "Mercury", "Mars", "Venus", "Earth", "Neptune", "Uranus", "Saturn", "Jupiter", "Sun"];
 
         for (var i = 0; i < surface.length; i++) {
@@ -428,7 +429,6 @@
                 // gltf.scene is the model
                 figure = gltf.scene;
 
-
                 figure.traverse(function (child) {
                     if (child instanceof THREE.Mesh) {
 
@@ -522,7 +522,6 @@
                 gameTime--;
                 minutesRemaining.innerHTML = Math.floor(gameTime / 3600);
                 secondsRemaining.innerHTML = Math.floor(gameTime % 3600 / 60);
-                //console.log(gameTime);
 
                 if (gameTime <= 0) {
                     failed();
@@ -706,8 +705,6 @@
                 });
 
                 cnt = Math.floor(Math.random() * 5);
-                //cnt++;
-                //cnt = 10;
             }
 
             scene.remove(nextPlanet);
